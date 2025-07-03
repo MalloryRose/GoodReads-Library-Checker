@@ -6,6 +6,11 @@ from bs4 import BeautifulSoup
 import json
 from dataclasses import dataclass
 from typing import List, Optional
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 
 @dataclass
 class Book:
@@ -86,6 +91,9 @@ class PBCLibraryScraper:
             'Connection': 'keep-alive',
             'Upgrade-Insecure-Requests': '1'
         }
+        self.driver = None #Selenium driver
+        self.setup_selenium()
+        
     
     def build_search_query(self, title, author):
         """Build the BiblioCommons search query string"""
@@ -127,7 +135,6 @@ class PBCLibraryScraper:
         # Look for book items in the search results
         # The exact selectors may need adjustment based on the actual HTML structure
         book_items = soup.find_all('div', class_='cp-search-result-item-content')
-        
         for item in book_items:
             try:
                 # Extract book title
@@ -137,7 +144,11 @@ class PBCLibraryScraper:
                 # Extract author
                 author_elem = item.find('span', class_='cp-author-link')
                 book_author = author_elem.get_text(strip=True) if author_elem else "Unknown"
-                
+                if book_author != "Unknown" and ', ' in book_author:
+                    # Change to First Last format
+                        last_name, first_name = book_author.split(', ', 1)
+                        book_author =  f"{first_name} {last_name}"
+             
                 # Extract availability information
                 availability_elem = item.find('span', class_='cp-availability-status')
                 availability = "Available"
@@ -155,6 +166,8 @@ class PBCLibraryScraper:
                 detail_link = link_elem['href'] if link_elem else None
                 if detail_link and not detail_link.startswith('http'):
                     detail_link = f"https://pbclibrary.bibliocommons.com{detail_link}"
+                    
+                
                 
                 results.append({
                     'title': book_title,
@@ -170,6 +183,27 @@ class PBCLibraryScraper:
         
         return results
     
+    def setup_selenium(self):
+        # Setup driver
+        try:
+            chrome_options = Options()
+            chrome_options.add_argument('--headless')  # Run in background
+            chrome_options.add_argument('--no-sandbox')
+            chrome_options.add_argument('--disable-dev-shm-usage')
+            chrome_options.add_argument('--disable-gpu')
+            chrome_options.add_argument('--window-size=1920,1080')
+            chrome_options.add_argument(f'--user-agent={self.headers["User-Agent"]}')
+            
+            self.driver = webdriver.Chrome(options=chrome_options)
+            print("Selenium WebDriver initialized")
+        except Exception as e:
+            print(f"Error setting up Selenium: {e}")
+            
+        
+    
+        
+        #Wait for page to load
+    
     def get_branch_availability(self, detail_link):
         """Get detailed branch availability from the book's detail page"""
         if not detail_link:
@@ -184,17 +218,23 @@ class PBCLibraryScraper:
             # Look for branch availability information
             # This selector may need adjustment based on actual HTML structure
             branch_info = []
-            branches = soup.find_all('div', class_='cp-availability-branch')
+            branches = soup.find_all('div', class_='cp-item-availability-table')
             
+            #Selenium stuff here
+            self.driver.get(detail_link)
+            
+          
             for branch in branches:
                 branch_name = branch.find('span', class_='branch-name')
                 branch_status = branch.find('span', class_='availability-status')
+              
                 
                 if branch_name and branch_status:
                     branch_info.append({
                         'branch': branch_name.get_text(strip=True),
                         'status': branch_status.get_text(strip=True)
                     })
+            
             
             return branch_info
             
@@ -259,6 +299,8 @@ if __name__ == "__main__":
     goodreads_extractor = GoodreadsExtractor()
     csv_file = "goodreads_library_export.csv"
     books = goodreads_extractor.load_from_csv(csv_file)
+    
+
     
     if not books:
         print("No books found in CSV. Using example books instead.")
