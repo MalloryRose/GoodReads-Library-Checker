@@ -1,9 +1,33 @@
 import requests
 import time
+import csv
 from urllib.parse import quote
 from bs4 import BeautifulSoup
 import json
+from dataclasses import dataclass
+from typing import List, Optional
 
+@dataclass
+class Book:
+    """Represents a book with its metadata"""
+    title: str
+    author: str
+    isbn: Optional[str] = None
+    goodreads_id: Optional[str] = None
+    
+    def __str__(self):
+        return f"{self.title} by {self.author}"
+
+@dataclass
+class LibraryResult:
+    """Represents library availability result"""
+    book: Book
+    available: bool
+    location: Optional[str] = None
+    call_number: Optional[str] = None
+    status: Optional[str] = None
+    url: Optional[str] = None
+    
 class GoodreadsExtractor:
     """Handles extraction of books from Goodreads"""
     
@@ -73,9 +97,9 @@ class PBCLibraryScraper:
         query = f"(title:({title}) AND contributor:({author}))"
         return query
     
-    def search_book(self, title, author):
+    def search_book(self, book: Book):
         """Search for a book and return availability information"""
-        query = self.build_search_query(title, author)
+        query = self.build_search_query(book.title, book.author)
         
         params = {
             'custom_edit': 'false',
@@ -88,13 +112,13 @@ class PBCLibraryScraper:
             response = requests.get(self.base_url, params=params, headers=self.headers)
             response.raise_for_status()
             
-            return self.parse_search_results(response.text, title, author)
+            return self.parse_search_results(response.text, book)
             
         except requests.RequestException as e:
-            print(f"Error searching for '{title}' by {author}: {e}")
+            print(f"Error searching for '{book.title}' by {book.author}: {e}")
             return None
     
-    def parse_search_results(self, html_content, title, author):
+    def parse_search_results(self, html_content, original_book: Book):
         """Parse the search results HTML to extract availability info"""
         soup = BeautifulSoup(html_content, 'html.parser')
         
@@ -115,14 +139,15 @@ class PBCLibraryScraper:
                 book_author = author_elem.get_text(strip=True) if author_elem else "Unknown"
                 
                 # Extract availability information
-                availability_elem = item.find('span', class_='cp-availability-status unavailable')
+                availability_elem = item.find('span', class_='cp-availability-status')
                 availability = "Available"
                 if availability_elem:
-                    availability = availability_elem.get_text(strip=True)
+                    availability_text = availability_elem.get_text(strip=True)
+                    if 'unavailable' in availability_elem.get('class', []):
+                        availability = availability_text
                 
                 # Extract format information
                 format_elem = item.find('li', class_='bib-field-value')
-               
                 book_format = format_elem.get_text(strip=True) if format_elem else "Unknown"
                 
                 # Extract link to detailed view
@@ -177,15 +202,15 @@ class PBCLibraryScraper:
             print(f"Error getting branch availability: {e}")
             return None
     
-    def check_goodreads_books(self, goodreads_books, preferred_branch=None):
+    def check_books(self, books: List[Book], preferred_branch=None):
         """Check availability for a list of books from Goodreads"""
         results = []
         
-        for i, book in enumerate(goodreads_books):
-            print(f"Checking book {i+1}/{len(goodreads_books)}: {book['title']}")
+        for i, book in enumerate(books):
+            print(f"Checking book {i+1}/{len(books)}: {book.title}")
             
             # Search for the book
-            search_results = self.search_book(book['title'], book['author'])
+            search_results = self.search_book(book)
             
             if search_results:
                 for result in search_results:
@@ -195,8 +220,10 @@ class PBCLibraryScraper:
                         branch_availability = self.get_branch_availability(result['detail_link'])
                     
                     result_data = {
-                        'original_title': book['title'],
-                        'original_author': book['author'],
+                        'original_title': book.title,
+                        'original_author': book.author,
+                        'original_isbn': book.isbn,
+                        'original_goodreads_id': book.goodreads_id,
                         'found_title': result['title'],
                         'found_author': result['author'],
                         'format': result['format'],
@@ -208,8 +235,10 @@ class PBCLibraryScraper:
                     results.append(result_data)
             else:
                 results.append({
-                    'original_title': book['title'],
-                    'original_author': book['author'],
+                    'original_title': book.title,
+                    'original_author': book.author,
+                    'original_isbn': book.isbn,
+                    'original_goodreads_id': book.goodreads_id,
                     'found_title': None,
                     'found_author': None,
                     'format': None,
@@ -225,34 +254,52 @@ class PBCLibraryScraper:
 
 # Example usage
 if __name__ == "__main__":
-    # Example Goodreads books list
-    goodreads_books = [
-        {"title": "The Nightingale", "author": "Kristin Hannah"},
-        {"title": "Where the Crawdads Sing", "author": "Delia Owens"},
-        {"title": "The Seven Husbands of Evelyn Hugo", "author": "Taylor Jenkins Reid"}
-    ]
+    # Option 1: Load from Goodreads CSV export
+    print("Loading books from Goodreads CSV export...")
+    goodreads_extractor = GoodreadsExtractor()
+    csv_file = "goodreads_library_export.csv"
+    books = goodreads_extractor.load_from_csv(csv_file)
     
+    if not books:
+        print("No books found in CSV. Using example books instead.")
+        # Option 2: Manual book list for testing
+        books = [
+            Book(title="The Nightingale", author="Kristin Hannah"),
+            Book(title="Where the Crawdads Sing", author="Delia Owens"),
+            Book(title="The Seven Husbands of Evelyn Hugo", author="Taylor Jenkins Reid")
+        ]
+    
+    print(f"Found {len(books)} books to check")
+    
+    # Initialize scraper
     scraper = PBCLibraryScraper()
     
-    # Check availability
-    results = scraper.check_goodreads_books(goodreads_books)
+    # Check availability (optionally specify preferred branch)
+    results = scraper.check_books(books, preferred_branch="West Palm Beach")
     
     # Display results
+    print("\n" + "="*50)
+    print("LIBRARY AVAILABILITY RESULTS")
+    print("="*50)
+    
     for result in results:
         print(f"\n--- {result['original_title']} by {result['original_author']} ---")
         if result['found_title']:
             print(f"Found: {result['found_title']} by {result['found_author']}")
             print(f"Format: {result['format']}")
             print(f"Availability: {result['availability']}")
+            if result['detail_link']:
+                print(f"Link: {result['detail_link']}")
             if result['branch_availability']:
                 print("Branch availability:")
                 for branch in result['branch_availability']:
                     print(f"  - {branch['branch']}: {branch['status']}")
         else:
-            print("Not found in library system")
+            print("❌ Not found in library system")
     
     # Save results to JSON file
     with open('library_availability.json', 'w') as f:
         json.dump(results, f, indent=2)
     
-    print("\nResults saved to library_availability.json")
+    print(f"\n✅ Results saved to library_availability.json")
+    print(f"📚 Checked {len(books)} books, found {len([r for r in results if r['found_title']])} matches")
