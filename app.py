@@ -1,5 +1,6 @@
 import requests
 import time
+import re
 import csv
 from urllib.parse import quote
 from bs4 import BeautifulSoup
@@ -199,10 +200,25 @@ class PBCLibraryScraper:
         except Exception as e:
             print(f"Error setting up Selenium: {e}")
             
-        
+    def __del__(self):
+        """Clean up Selenium driver"""
+        if self.driver:
+            self.driver.quit()
     
+    def extract_branch_names(self, tbody_text):
+        # Pattern to match branch names (words ending with "BRANCH" or specific library names)
+        pattern = r'^([A-Z][A-Z\s\-\.]+(?:BRANCH|LIBRARY))(?:\s*-\s*[A-Za-z\s]+)?$'
         
-        #Wait for page to load
+        lines = tbody_text.strip().split('\n')
+        branch_names = []
+        
+        for line in lines:
+            line = line.strip()
+            match = re.match(pattern, line)
+            if match:
+                branch_names.append(match.group(1).strip())
+        
+        return list(set(branch_names))  # Remove duplicates
     
     def get_branch_availability(self, detail_link):
         """Get detailed branch availability from the book's detail page"""
@@ -221,7 +237,38 @@ class PBCLibraryScraper:
             branches = soup.find_all('div', class_='cp-item-availability-table')
             
             #Selenium stuff here
-            self.driver.get(detail_link)
+            try:
+                self.driver.get(detail_link)
+            #    self.driver.find_element_by_id()
+                time.sleep(2)
+                availibility_button = self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div/main/div/div/section[1]/div/div[3]/div/div/div[2]/div[1]/div/button")
+            
+                availibility_button.click()
+                time.sleep(2)
+                
+             
+                tbody = self.driver.find_element(By.TAG_NAME, "tbody")
+                text = tbody.text
+
+                branch_names = self.extract_branch_names(text)
+                for branch in sorted(branch_names):
+                    print(branch)
+                
+                
+                # wait = WebDriverWait(self.driver, 10)
+                # wait.until(EC.presence_of_element_located((By.CLASS_NAME, "new-content")))
+
+                # html = self.driver.page_source
+                # print(html)
+
+                # for e in elements:
+                #     print(e)
+                
+                
+                
+            except Exception as e:
+                print(f"Error with Selenium availability: {e}")
+                return None
             
           
             for branch in branches:
