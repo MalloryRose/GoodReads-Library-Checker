@@ -9,19 +9,47 @@
     "format": "Unknown",
     "availability": "Available",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/808813212",
-    "branch_availability": []
-  },
-  {
-    "original_title": "Project Hail Mary",
-    "original_author": "Andy Weir",
-    "original_isbn": "=\"9780593135204\"",
-    "original_goodreads_id": "54493401",
-    "found_title": "Proyecto Hail Mary",
-    "found_author": "Andy Weir",
-    "format": "Unknown",
-    "availability": "All copies in use",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/827180212",
-    "branch_availability": []
+    "branch_availability": [
+      {
+        "branch": "MAIN LIBRARY"
+      },
+      {
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "GREENACRES BRANCH"
+      },
+      {
+        "branch": "LOULA V. YORK BRANCH"
+      },
+      {
+        "branch": "WEST BOCA BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "TEQUESTA BRANCH"
+      },
+      {
+        "branch": "ACREAGE BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "GARDENS BRANCH"
+      }
+    ]
   },
   {
     "original_title": "Atmosphere",
@@ -33,34 +61,6 @@
     "format": "Unknown",
     "availability": "Available",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/931709212",
-    "branch_availability": [
-      {
-        "branch": "BOOKMOBILE ONE"
-      },
-      {
-        "branch": "BOOKMOBILE ONE"
-      },
-      {
-        "branch": "BOOKMOBILE ONE"
-      },
-      {
-        "branch": "BOOKMOBILE ONE"
-      },
-      {
-        "branch": "BOOKMOBILE ONE"
-      }
-    ]
-  },
-  {
-    "original_title": "Atmosphere",
-    "original_author": "Taylor Jenkins Reid",
-    "original_isbn": "=\"\"",
-    "original_goodreads_id": "220817728",
-    "found_title": "Atmosphere",
-    "found_author": "Taylor Jenkins/ Whelan, Julia (NRT)/ Dimercurio, Kristen (NRT) Reid",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/937928212",
     "branch_availability": []
   },
   {
@@ -80,12 +80,22 @@
     "original_author": "Toshikazu Kawaguchi",
     "original_isbn": "=\"9781529029581\"",
     "original_goodreads_id": "44421460",
-    "found_title": null,
-    "found_author": null,
-    "format": null,
-    "availability": "Not found",
-    "detail_link": null,
-    "branch_availability": null
+    "found_title": "Before the Coffee Gets Cold",
+    "found_author": "Toshikazu Kawaguchi",
+    "format": "Unknown",
+    "availability": "Available",
+    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/829710212",
+    "branch_availability": [
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "BELLE GLADE BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
+      }
+    ]
   },
   {
     "original_title": "Girl Decoded: A Scientist's Quest to Reclaim Our Humanity by Bringing Emotional Intelligence to Technology",
@@ -105,16 +115,16 @@
         "branch": "GREENACRES BRANCH"
       },
       {
-        "branch": "JUPITER BRANCH"
+        "branch": "WEST BOCA BRANCH"
       },
       {
         "branch": "LANTANA ROAD BRANCH"
       },
       {
-        "branch": "WELLINGTON BRANCH"
+        "branch": "JUPITER BRANCH"
       },
       {
-        "branch": "WEST BOCA BRANCH"
+        "branch": "WELLINGTON BRANCH"
       }
     ]
   },
@@ -135,12 +145,31 @@
     "original_author": "Rebecca Yarros",
     "original_isbn": "=\"9781649374042\"",
     "original_goodreads_id": "61431922",
-    "found_title": null,
-    "found_author": null,
-    "format": null,
-    "availability": "Not found",
-    "detail_link": null,
-    "branch_availability": null
+    "found_title": "Fourth Wing",
+    "found_author": "Rebecca Yarros",
+    "format": "Unknown",
+    "availability": "Available",
+    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/881487212",
+    "branch_availability": [
+      {
+        "branch": "GLADES ROAD BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "GARDENS BRANCH"
+      },
+      {
+        "branch": "WELLINGTON BRANCH"
+      }
+    ]
   },
   {
     "original_title": "The Great Divorce",
@@ -154,84 +183,22 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/376283212",
     "branch_availability": [
       {
-        "branch": "GARDENS BRANCH"
-      },
-      {
         "branch": "GREENACRES BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
         "branch": "JUPITER BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
       },
       {
         "branch": "WEST BOYNTON BRANCH"
-      }
-    ]
-  },
-  {
-    "original_title": "The Great Divorce",
-    "original_author": "C.S. Lewis",
-    "original_isbn": "=\"\"",
-    "original_goodreads_id": "25845273",
-    "found_title": "The C.S. Lewis Signature Classics",
-    "found_author": "C. S. Lewis",
-    "format": "Unknown",
-    "availability": "All copies in use",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/666192212",
-    "branch_availability": []
-  },
-  {
-    "original_title": "The Great Divorce",
-    "original_author": "C.S. Lewis",
-    "original_isbn": "=\"\"",
-    "original_goodreads_id": "25845273",
-    "found_title": "C.S. Lewis",
-    "found_author": "C. S. Lewis",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/338719212",
-    "branch_availability": [
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
       {
         "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "WELLINGTON BRANCH"
-      }
-    ]
-  },
-  {
-    "original_title": "The Great Divorce",
-    "original_author": "C.S. Lewis",
-    "original_isbn": "=\"\"",
-    "original_goodreads_id": "25845273",
-    "found_title": "You've Got to Read This Book!",
-    "found_author": "Unknown",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/306908212",
-    "branch_availability": [
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
       }
     ]
   },
@@ -247,50 +214,19 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/256892212",
     "branch_availability": [
       {
-        "branch": "CLARENCE E. ANTHONY BRANCH - South Bay"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "GLADES ROAD BRANCH"
       },
       {
-        "branch": "GREENACRES BRANCH"
+        "branch": "ROYAL PALM BEACH BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
+        "branch": "CLARENCE E. ANTHONY BRANCH"
       },
       {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
-      }
-    ]
-  },
-  {
-    "original_title": "The Five People You Meet in Heaven",
-    "original_author": "Mitch Albom",
-    "original_isbn": "=\"9780786868711\"",
-    "original_goodreads_id": "3431",
-    "found_title": "The Next Person You Meet in Heaven",
-    "found_author": "Mitch Albom",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/699810212",
-    "branch_availability": [
-      {
-        "branch": "BELLE GLADE BRANCH"
-      },
-      {
-        "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "TEQUESTA BRANCH"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       }
     ]
   },
@@ -306,16 +242,16 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/557453212",
     "branch_availability": [
       {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
         "branch": "CANYON BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
+        "branch": "WELLINGTON BRANCH"
       },
       {
         "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "WELLINGTON BRANCH"
       }
     ]
   },
@@ -331,31 +267,28 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/236420212",
     "branch_availability": [
       {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
         "branch": "BELLE GLADE BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
       },
       {
         "branch": "CANYON BRANCH"
       },
       {
-        "branch": "CLARENCE E. ANTHONY BRANCH - South Bay"
+        "branch": "GREENACRES BRANCH"
       },
       {
-        "branch": "GARDENS BRANCH"
+        "branch": "LOULA V. YORK BRANCH"
+      },
+      {
+        "branch": "WEST BOCA BRANCH"
       },
       {
         "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
       },
       {
         "branch": "JUPITER BRANCH"
@@ -364,40 +297,7 @@
         "branch": "LANTANA ROAD BRANCH"
       },
       {
-        "branch": "LOULA V. YORK BRANCH - Pahokee"
-      },
-      {
-        "branch": "LOULA V. YORK BRANCH - Pahokee"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
+        "branch": "WEST BOYNTON BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
@@ -406,114 +306,13 @@
         "branch": "TEQUESTA BRANCH"
       },
       {
-        "branch": "WEST BOYNTON BRANCH"
+        "branch": "CLARENCE E. ANTHONY BRANCH"
       },
       {
-        "branch": "WEST BOYNTON BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
-      }
-    ]
-  },
-  {
-    "original_title": "Their Eyes Were Watching God",
-    "original_author": "Zora Neale Hurston",
-    "original_isbn": "=\"9780061120060\"",
-    "original_goodreads_id": "37415",
-    "found_title": "Their Eyes Were Watching God",
-    "found_author": "Unknown",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/296920212",
-    "branch_availability": [
-      {
-        "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "BELLE GLADE BRANCH"
-      },
-      {
-        "branch": "CLARENCE E. ANTHONY BRANCH - South Bay"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "LOULA V. YORK BRANCH - Pahokee"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "TEQUESTA BRANCH"
-      },
-      {
-        "branch": "WELLINGTON BRANCH"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
-      }
-    ]
-  },
-  {
-    "original_title": "Their Eyes Were Watching God",
-    "original_author": "Zora Neale Hurston",
-    "original_isbn": "=\"9780061120060\"",
-    "original_goodreads_id": "37415",
-    "found_title": "Book Club in A Bag",
-    "found_author": "Zora Neale Hurston",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/652106212",
-    "branch_availability": []
-  },
-  {
-    "original_title": "Their Eyes Were Watching God",
-    "original_author": "Zora Neale Hurston",
-    "original_isbn": "=\"9780061120060\"",
-    "original_goodreads_id": "37415",
-    "found_title": "Great Short Books",
-    "found_author": "Kenneth C. Davis",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/865384212",
-    "branch_availability": [
-      {
-        "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
       }
     ]
   },
@@ -529,24 +328,12 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/796325212",
     "branch_availability": [
       {
-        "branch": "BOOKMOBILE ONE"
+        "branch": "TEQUESTA BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
+        "branch": "ACREAGE BRANCH"
       }
     ]
-  },
-  {
-    "original_title": "The Four Winds",
-    "original_author": "Kristin Hannah",
-    "original_isbn": "=\"9781250178602\"",
-    "original_goodreads_id": "53138081",
-    "found_title": "Book Club in A Bag",
-    "found_author": "Kristin Hannah",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/881637212",
-    "branch_availability": []
   },
   {
     "original_title": "Empire of Pain: The Secret History of the Sackler Dynasty",
@@ -560,31 +347,28 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/803878212",
     "branch_availability": [
       {
-        "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "MAIN LIBRARY"
       },
       {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
+        "branch": "GREENACRES BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "ACREAGE BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "GARDENS BRANCH"
       }
     ]
   },
@@ -600,34 +384,22 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/838533212",
     "branch_availability": [
       {
-        "branch": "BOOKS BY MAIL - Members Only"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "CANYON BRANCH"
       },
       {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
         "branch": "GREENACRES BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "JUPITER BRANCH"
+        "branch": "GLADES ROAD BRANCH"
       },
       {
         "branch": "LANTANA ROAD BRANCH"
       },
       {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
+        "branch": "WEST BOYNTON BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
@@ -636,62 +408,10 @@
         "branch": "TEQUESTA BRANCH"
       },
       {
-        "branch": "WELLINGTON BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
-      }
-    ]
-  },
-  {
-    "original_title": "Lessons in Chemistry",
-    "original_author": "Bonnie Garmus",
-    "original_isbn": "=\"\"",
-    "original_goodreads_id": "206305528",
-    "found_title": "Large Print Book Club in A Bag",
-    "found_author": "Bonnie Garmus",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/881566212",
-    "branch_availability": []
-  },
-  {
-    "original_title": "Lessons in Chemistry",
-    "original_author": "Bonnie Garmus",
-    "original_isbn": "=\"\"",
-    "original_goodreads_id": "206305528",
-    "found_title": "Lecciones de qu\u00edmica",
-    "found_author": "Bonnie Garmus",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/887048212",
-    "branch_availability": [
-      {
-        "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "WELLINGTON BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
       }
     ]
   },
@@ -713,99 +433,28 @@
     "original_isbn": "=\"9780593099322\"",
     "original_goodreads_id": "44767458",
     "found_title": "Dune",
-    "found_author": "Brian Herbert",
+    "found_author": "Frank Herbert",
     "format": "Unknown",
     "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/826990212",
-    "branch_availability": [
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      }
-    ]
-  },
-  {
-    "original_title": "Dune (Dune, #1)",
-    "original_author": "Frank Herbert",
-    "original_isbn": "=\"9780593099322\"",
-    "original_goodreads_id": "44767458",
-    "found_title": "Dune",
-    "found_author": "Brian Herbert",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/826991212",
+    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/832087212",
     "branch_availability": [
       {
         "branch": "BELLE GLADE BRANCH"
       },
       {
-        "branch": "CANYON BRANCH"
+        "branch": "MAIN LIBRARY"
+      },
+      {
+        "branch": "GREENACRES BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "WELLINGTON BRANCH"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
-      }
-    ]
-  },
-  {
-    "original_title": "Dune (Dune, #1)",
-    "original_author": "Frank Herbert",
-    "original_isbn": "=\"9780593099322\"",
-    "original_goodreads_id": "44767458",
-    "found_title": "Dune: Prophecy",
-    "found_author": "Unknown",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/937320212",
-    "branch_availability": [
-      {
-        "branch": "BELLE GLADE BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "LOULA V. YORK BRANCH - Pahokee"
-      },
-      {
-        "branch": "MAIN LIBRARY"
       }
     ]
   },
@@ -821,28 +470,16 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/419231212",
     "branch_availability": [
       {
+        "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
         "branch": "CANYON BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
         "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
       }
     ]
   },
@@ -851,12 +488,46 @@
     "original_author": "Christopher Reich",
     "original_isbn": "=\"\"",
     "original_goodreads_id": "193772031",
-    "found_title": null,
-    "found_author": null,
-    "format": null,
-    "availability": "Not found",
-    "detail_link": null,
-    "branch_availability": null
+    "found_title": "Matterhorn",
+    "found_author": "Christopher Reich",
+    "format": "Unknown",
+    "availability": "Available",
+    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/907058212",
+    "branch_availability": [
+      {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "WEST BOCA BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "TEQUESTA BRANCH"
+      },
+      {
+        "branch": "GARDENS BRANCH"
+      },
+      {
+        "branch": "WELLINGTON BRANCH"
+      }
+    ]
   },
   {
     "original_title": "Dark Aeon: Transhumanism and the War Against Humanity",
@@ -882,22 +553,22 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/887424212",
     "branch_availability": [
       {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "MAIN LIBRARY"
       },
       {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
+        "branch": "GREENACRES BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
       }
     ]
   },
@@ -913,31 +584,25 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/478691212",
     "branch_availability": [
       {
-        "branch": "ACREAGE BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
-        "branch": "GARDENS BRANCH"
+        "branch": "MAIN LIBRARY"
       },
       {
         "branch": "GLADES ROAD BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
         "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
       },
       {
         "branch": "TEQUESTA BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
       }
     ]
   },
@@ -951,7 +616,7 @@
     "format": "Unknown",
     "availability": "All copies in use",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/866375212",
-    "branch_availability": []
+    "branch_availability": null
   },
   {
     "original_title": "The Humans",
@@ -965,19 +630,16 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/488728212",
     "branch_availability": [
       {
-        "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "CANYON BRANCH"
-      },
-      {
         "branch": "GLADES ROAD BRANCH"
       },
       {
-        "branch": "GREENACRES BRANCH"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "GREENACRES BRANCH"
       }
     ]
   },
@@ -991,7 +653,11 @@
     "format": "Unknown",
     "availability": "Available",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/529724212",
-    "branch_availability": []
+    "branch_availability": [
+      {
+        "branch": "GARDENS BRANCH"
+      }
+    ]
   },
   {
     "original_title": "Remarkably Bright Creatures",
@@ -1003,45 +669,33 @@
     "format": "Unknown",
     "availability": "Available",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/840966212",
-    "branch_availability": null
-  },
-  {
-    "original_title": "Remarkably Bright Creatures",
-    "original_author": "Shelby Van Pelt",
-    "original_isbn": "=\"9780063204157\"",
-    "original_goodreads_id": "58733693",
-    "found_title": "Large Print Book Club in A Bag",
-    "found_author": "Shelby Van Pelt",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/914450212",
-    "branch_availability": []
-  },
-  {
-    "original_title": "Remarkably Bright Creatures",
-    "original_author": "Shelby Van Pelt",
-    "original_isbn": "=\"9780063204157\"",
-    "original_goodreads_id": "58733693",
-    "found_title": "Criaturas luminosas",
-    "found_author": "Shelby Van Pelt",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/901509212",
     "branch_availability": [
+      {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
+      },
+      {
+        "branch": "GREENACRES BRANCH"
+      },
+      {
+        "branch": "WEST BOCA BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "TEQUESTA BRANCH"
+      },
       {
         "branch": "ACREAGE BRANCH"
       },
       {
-        "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       }
     ]
   },
@@ -1057,31 +711,31 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/876148212",
     "branch_availability": [
       {
-        "branch": "ACREAGE BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "BELLE GLADE BRANCH"
       },
       {
+        "branch": "MAIN LIBRARY"
+      },
+      {
         "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "TEQUESTA BRANCH"
+      },
+      {
+        "branch": "ACREAGE BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "GARDENS BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
         "branch": "WELLINGTON BRANCH"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
       }
     ]
   },
@@ -1097,38 +751,13 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/750332212",
     "branch_availability": [
       {
-        "branch": "GARDENS BRANCH"
-      },
-      {
         "branch": "GLADES ROAD BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      }
-    ]
-  },
-  {
-    "original_title": "My Dark Vanessa",
-    "original_author": "Kate Elizabeth Russell",
-    "original_isbn": "=\"9780062941503\"",
-    "original_goodreads_id": "44890081",
-    "found_title": "Mi sombr\u00eda Vanessa",
-    "found_author": "Kate Elizabeth Russell",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/790949212",
-    "branch_availability": [
-      {
-        "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
+        "branch": "GARDENS BRANCH"
       }
     ]
   },
@@ -1144,7 +773,19 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/878605212",
     "branch_availability": [
       {
-        "branch": "MAIN LIBRARY"
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "ACREAGE BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "WELLINGTON BRANCH"
       }
     ]
   },
@@ -1160,31 +801,25 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/505549212",
     "branch_availability": [
       {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "MAIN LIBRARY"
       },
       {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
+        "branch": "GREENACRES BRANCH"
       },
       {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
+        "branch": "GLADES ROAD BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "WEST BOYNTON BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
@@ -1193,21 +828,9 @@
         "branch": "TEQUESTA BRANCH"
       },
       {
-        "branch": "WEST BOYNTON BRANCH"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       }
     ]
-  },
-  {
-    "original_title": "The Storied Life of A.J. Fikry",
-    "original_author": "Gabrielle Zevin",
-    "original_isbn": "=\"9781616203214\"",
-    "original_goodreads_id": "18293427",
-    "found_title": "Book Club in A Bag",
-    "found_author": "Gabrielle Zevin",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/652100212",
-    "branch_availability": []
   },
   {
     "original_title": "Atlas of the Heart: Mapping Meaningful Connection and the Language of Human Experience",
@@ -1221,25 +844,28 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/827531212",
     "branch_availability": [
       {
-        "branch": "ACREAGE BRANCH"
+        "branch": "BELLE GLADE BRANCH"
       },
       {
-        "branch": "BELLE GLADE BRANCH"
+        "branch": "MAIN LIBRARY"
       },
       {
         "branch": "CANYON BRANCH"
       },
       {
-        "branch": "CLARENCE E. ANTHONY BRANCH - South Bay"
+        "branch": "GREENACRES BRANCH"
+      },
+      {
+        "branch": "LOULA V. YORK BRANCH"
+      },
+      {
+        "branch": "WEST BOCA BRANCH"
       },
       {
         "branch": "GLADES ROAD BRANCH"
       },
       {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "JUPITER BRANCH"
@@ -1248,19 +874,16 @@
         "branch": "LANTANA ROAD BRANCH"
       },
       {
-        "branch": "LOULA V. YORK BRANCH - Pahokee"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
         "branch": "ROYAL PALM BEACH BRANCH"
       },
       {
-        "branch": "WEST BOCA BRANCH"
+        "branch": "WEST BOYNTON BRANCH"
       },
       {
-        "branch": "WEST BOYNTON BRANCH"
+        "branch": "ACREAGE BRANCH"
+      },
+      {
+        "branch": "CLARENCE E. ANTHONY BRANCH"
       }
     ]
   },
@@ -1272,78 +895,14 @@
     "found_title": "The Stranger",
     "found_author": "Albert Camus",
     "format": "Unknown",
-    "availability": "All copies in use",
+    "availability": "Available",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/187194212",
-    "branch_availability": []
-  },
-  {
-    "original_title": "The Stranger",
-    "original_author": "Albert Camus",
-    "original_isbn": "=\"\"",
-    "original_goodreads_id": "49552",
-    "found_title": "The Stranger",
-    "found_author": "Jacques Ferrandez",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/600034212",
     "branch_availability": [
       {
-        "branch": "LANTANA ROAD BRANCH"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
-      {
-        "branch": "MAIN LIBRARY"
-      }
-    ]
-  },
-  {
-    "original_title": "The Stranger",
-    "original_author": "Albert Camus",
-    "original_isbn": "=\"\"",
-    "original_goodreads_id": "49552",
-    "found_title": "The Graphic Canon",
-    "found_author": "Unknown",
-    "format": "Unknown",
-    "availability": "All copies in use",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/495270212",
-    "branch_availability": []
-  },
-  {
-    "original_title": "The Stranger",
-    "original_author": "Albert Camus",
-    "original_isbn": "=\"\"",
-    "original_goodreads_id": "49552",
-    "found_title": "Great Short Books",
-    "found_author": "Kenneth C. Davis",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/865384212",
-    "branch_availability": [
       {
         "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
       }
     ]
   },
@@ -1359,72 +918,22 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/774848212",
     "branch_availability": [
       {
-        "branch": "ACREAGE BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "CANYON BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
+        "branch": "LANTANA ROAD BRANCH"
       },
       {
         "branch": "JUPITER BRANCH"
       },
       {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "WELLINGTON BRANCH"
-      }
-    ]
-  },
-  {
-    "original_title": "The Remains of the Day",
-    "original_author": "Kazuo Ishiguro",
-    "original_isbn": "=\"\"",
-    "original_goodreads_id": "28921",
-    "found_title": "The Remains of the Day",
-    "found_author": "Unknown",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/272884212",
-    "branch_availability": [
-      {
         "branch": "ACREAGE BRANCH"
       },
       {
-        "branch": "WELLINGTON BRANCH"
-      }
-    ]
-  },
-  {
-    "original_title": "The Remains of the Day",
-    "original_author": "Kazuo Ishiguro",
-    "original_isbn": "=\"\"",
-    "original_goodreads_id": "28921",
-    "found_title": "Los restos del d\u00eda",
-    "found_author": "Kazuo Ishiguro",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/857930212",
-    "branch_availability": [
-      {
-        "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "WELLINGTON BRANCH"
@@ -1455,184 +964,58 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/899958212",
     "branch_availability": [
       {
-        "branch": "ACREAGE BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "BELLE GLADE BRANCH"
       },
       {
-        "branch": "BOOKS BY MAIL - Members Only"
+        "branch": "MAIN LIBRARY"
       },
       {
-        "branch": "BOOKS BY MAIL - Members Only"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
+        "branch": "CANYON BRANCH"
       },
       {
         "branch": "GREENACRES BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "LOULA V. YORK BRANCH - Pahokee"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "TEQUESTA BRANCH"
-      },
-      {
-        "branch": "TEQUESTA BRANCH"
-      },
-      {
-        "branch": "TEQUESTA BRANCH"
-      },
-      {
-        "branch": "WELLINGTON BRANCH"
-      },
-      {
-        "branch": "WELLINGTON BRANCH"
-      },
-      {
-        "branch": "WELLINGTON BRANCH"
-      },
-      {
-        "branch": "WELLINGTON BRANCH"
+        "branch": "LOULA V. YORK BRANCH"
       },
       {
         "branch": "WEST BOCA BRANCH"
       },
       {
-        "branch": "WEST BOYNTON BRANCH"
+        "branch": "GLADES ROAD BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
       },
       {
         "branch": "WEST BOYNTON BRANCH"
       },
       {
-        "branch": "WEST BOYNTON BRANCH"
+        "branch": "ROYAL PALM BEACH BRANCH"
       },
       {
-        "branch": "WEST BOYNTON BRANCH"
+        "branch": "TEQUESTA BRANCH"
       },
       {
-        "branch": "WEST BOYNTON BRANCH"
+        "branch": "ACREAGE BRANCH"
+      },
+      {
+        "branch": "CLARENCE E. ANTHONY BRANCH"
+      },
+      {
+        "branch": "GARDENS BRANCH"
+      },
+      {
+        "branch": "WELLINGTON BRANCH"
       }
     ]
   },
@@ -1641,24 +1024,77 @@
     "original_author": "Carlos Ruiz Zaf\u00f3n",
     "original_isbn": "=\"\"",
     "original_goodreads_id": "1232",
-    "found_title": null,
-    "found_author": null,
-    "format": null,
-    "availability": "Not found",
-    "detail_link": null,
-    "branch_availability": null
+    "found_title": "The Shadow of the Wind",
+    "found_author": "Carlos Ruiz Zaf\u00f3n",
+    "format": "Unknown",
+    "availability": "Available",
+    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/266259212",
+    "branch_availability": [
+      {
+        "branch": "GREENACRES BRANCH"
+      },
+      {
+        "branch": "LOULA V. YORK BRANCH"
+      },
+      {
+        "branch": "WEST BOCA BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
+      },
+      {
+        "branch": "ACREAGE BRANCH"
+      },
+      {
+        "branch": "WELLINGTON BRANCH"
+      }
+    ]
   },
   {
     "original_title": "Six of Crows (Six of Crows, #1)",
     "original_author": "Leigh Bardugo",
     "original_isbn": "=\"9781627792127\"",
     "original_goodreads_id": "23437156",
-    "found_title": null,
-    "found_author": null,
-    "format": null,
-    "availability": "Not found",
-    "detail_link": null,
-    "branch_availability": null
+    "found_title": "Six of Crows",
+    "found_author": "Leigh Bardugo",
+    "format": "Unknown",
+    "availability": "Available",
+    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/564114212",
+    "branch_availability": [
+      {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "BELLE GLADE BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
+      },
+      {
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "LOULA V. YORK BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "ACREAGE BRANCH"
+      },
+      {
+        "branch": "CLARENCE E. ANTHONY BRANCH"
+      }
+    ]
   },
   {
     "original_title": "Radio Silence",
@@ -1672,49 +1108,40 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/905685212",
     "branch_availability": [
       {
-        "branch": "ACREAGE BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "BELLE GLADE BRANCH"
       },
       {
-        "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH - Delray Beach"
-      },
-      {
-        "branch": "LOULA V. YORK BRANCH - Pahokee"
-      },
-      {
         "branch": "MAIN LIBRARY"
       },
       {
-        "branch": "OKEECHOBEE BLVD BRANCH - West Palm Beach"
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "LOULA V. YORK BRANCH"
+      },
+      {
+        "branch": "WEST BOCA BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
       },
       {
-        "branch": "WELLINGTON BRANCH"
+        "branch": "ACREAGE BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "GARDENS BRANCH"
       },
       {
         "branch": "WELLINGTON BRANCH"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
       }
     ]
   },
@@ -1723,11 +1150,11 @@
     "original_author": "T.J. Klune",
     "original_isbn": "=\"\"",
     "original_goodreads_id": "45047384",
-    "found_title": null,
-    "found_author": null,
-    "format": null,
-    "availability": "Not found",
-    "detail_link": null,
+    "found_title": "The House in the Cerulean Sea",
+    "found_author": "TJ Klune",
+    "format": "Unknown",
+    "availability": "All copies in use",
+    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/757996212",
     "branch_availability": null
   },
   {
@@ -1742,10 +1169,28 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/587709212",
     "branch_availability": [
       {
-        "branch": "CANYON BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
       },
       {
         "branch": "TEQUESTA BRANCH"
+      },
+      {
+        "branch": "ACREAGE BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
       }
     ]
   },
@@ -1754,12 +1199,19 @@
     "original_author": "Freida McFadden",
     "original_isbn": "=\"9781803144375\"",
     "original_goodreads_id": "60556912",
-    "found_title": null,
-    "found_author": null,
-    "format": null,
-    "availability": "Not found",
-    "detail_link": null,
-    "branch_availability": null
+    "found_title": "The Housemaid",
+    "found_author": "Freida McFadden",
+    "format": "Unknown",
+    "availability": "Available",
+    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/874386212",
+    "branch_availability": [
+      {
+        "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      }
+    ]
   },
   {
     "original_title": "The Silent Patient",
@@ -1771,18 +1223,13 @@
     "format": "Unknown",
     "availability": "Available",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/701870212",
-    "branch_availability": []
-  },
-  {
-    "original_title": "The Silent Patient",
-    "original_author": "Alex Michaelides",
-    "original_isbn": "=\"9781250301697\"",
-    "original_goodreads_id": "40097951",
-    "found_title": "Book Club in A Bag",
-    "found_author": "Alex Michaelides",
-    "format": "Unknown",
-    "availability": "Available",
-    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/820226212",
-    "branch_availability": []
+    "branch_availability": [
+      {
+        "branch": "GARDENS BRANCH"
+      },
+      {
+        "branch": "BELLE GLADE BRANCH"
+      }
+    ]
   }
 ]

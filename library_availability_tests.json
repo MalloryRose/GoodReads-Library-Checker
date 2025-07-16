@@ -1,0 +1,77 @@
+[
+  {
+    "original_title": "The Nightingale",
+    "original_author": "Kristin Hannah",
+    "original_isbn": null,
+    "original_goodreads_id": null,
+    "found_title": "The Nightingale",
+    "found_author": "Kristin Hannah",
+    "format": "Unknown",
+    "availability": "Available",
+    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/934138212",
+    "branch_availability": [
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      }
+    ]
+  },
+  {
+    "original_title": "Where the Crawdads Sing",
+    "original_author": "Delia Owens",
+    "original_isbn": null,
+    "original_goodreads_id": null,
+    "found_title": "Where the Crawdads Sing",
+    "found_author": "Delia Owens",
+    "format": "Unknown",
+    "availability": "Available",
+    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/682452212",
+    "branch_availability": [
+      {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
+      },
+      {
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
+      },
+      {
+        "branch": "GARDENS BRANCH"
+      },
+      {
+        "branch": "CLARENCE E. ANTHONY BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "BELLE GLADE BRANCH"
+      },
+      {
+        "branch": "WELLINGTON BRANCH"
+      }
+    ]
+  },
+  {
+    "original_title": "The Seven Husbands of Evelyn Hugo",
+    "original_author": "Taylor Jenkins Reid",
+    "original_isbn": null,
+    "original_goodreads_id": null,
+    "found_title": "The Seven Husbands of Evelyn Hugo",
+    "found_author": "Taylor Jenkins Reid",
+    "format": "Unknown",
+    "availability": "Available",
+    "detail_link": "https://pbclibrary.bibliocommons.com/item/show/933745212",
+    "branch_availability": [
+      {
+        "branch": "MAIN LIBRARY"
+      }
+    ]
+  }
+]

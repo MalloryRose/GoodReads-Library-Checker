@@ -1,0 +1,5 @@
+Updates to be made:
+
+1. Get rid of duplicate branches
+2. Get rid of extra parenthesis in the title search for an exact book
+
