@@ -71,6 +71,16 @@ class GoodreadsExtractor:
         
         return books
     
+    def scrape_want_to_read_shelf(self, user_id: str) -> List[Book]:
+        """
+        Scrape books from Goodreads "Want to Read" shelf
+        Note: This is a placeholder - you'll need to implement based on Goodreads' current structure
+        """
+        # This would require web scraping with BeautifulSoup or Selenium
+        # Implementation depends on current Goodreads HTML structure
+        print("Web scraping not implemented - use CSV export method instead")
+        return []
+
 class PBCLibraryScraper:
     def __init__(self):
         self.base_url = "https://pbclibrary.bibliocommons.com/v2/search"
@@ -97,10 +107,9 @@ class PBCLibraryScraper:
         return query
     
     def search_book(self, book: Book):
-        """Search for a book using Selenium and return availability information"""
+        """Search for a book and return availability information"""
         query = self.build_search_query(book.title, book.author)
         
-        # Build the full URL
         params = {
             'custom_edit': 'false',
             'query': query,
@@ -108,24 +117,13 @@ class PBCLibraryScraper:
             'suppress': 'true'
         }
         
-        # Convert params to URL string
-        from urllib.parse import urlencode
-        search_url = f"{self.base_url}?{urlencode(params)}"
-        
         try:
-            # Use Selenium to get the page
-            self.driver.get(search_url)
+            response = requests.get(self.base_url, params=params, headers=self.headers)
+            response.raise_for_status()
             
-            # Wait for search results to load
-            wait = WebDriverWait(self.driver, 10)
-            wait.until(EC.presence_of_element_located((By.CLASS_NAME, "cp-search-result-item-content")))
+            return self.parse_search_results(response.text, book)
             
-            # Get the current page source from Selenium
-            html_content = self.driver.page_source
-            
-            return self.parse_search_results(html_content, book)
-            
-        except Exception as e:
+        except requests.RequestException as e:
             print(f"Error searching for '{book.title}' by {book.author}: {e}")
             return None
     
@@ -134,7 +132,7 @@ class PBCLibraryScraper:
         soup = BeautifulSoup(html_content, 'html.parser')
         
         results = []
-      #  print(self.driver.page_source)
+        
         # Look for book items in the search results
         # The exact selectors may need adjustment based on the actual HTML structure
         book_items = soup.find_all('div', class_='cp-search-result-item-content')
@@ -152,27 +150,14 @@ class PBCLibraryScraper:
                         last_name, first_name = book_author.split(', ', 1)
                         book_author =  f"{first_name} {last_name}"
              
-                
                 # Extract availability information
                 availability_elem = item.find('span', class_='cp-availability-status')
-                availability = "Unknown"  # Default value
-
+                availability = "Available"
                 if availability_elem:
                     availability_text = availability_elem.get_text(strip=True)
-                    element_classes = availability_elem.get('class', [])
-                    
-                    print("Availability text:", availability_text)
-                    print("Element classes:", element_classes)
-                    
-                    # Check the classes to determine availability
-                    if 'unavailable' in element_classes:
-                        availability = availability_text  # "All copies in use"
-                    elif 'available' in element_classes:
-                        availability = "Available"
-                    else:
-                        # Fallback to text content
-                        availability = availability_text if availability_text else "Available"
-                                
+                    if 'unavailable' in availability_elem.get('class', []):
+                        availability = availability_text
+                
                 # Extract format information
                 format_elem = item.find('li', class_='bib-field-value')
                 book_format = format_elem.get_text(strip=True) if format_elem else "Unknown"
@@ -200,118 +185,109 @@ class PBCLibraryScraper:
         return results
     
     def setup_selenium(self):
+        # Setup driver
         try:
             chrome_options = Options()
-            chrome_options.add_argument('--headless')
+            chrome_options.add_argument('--headless')  # Run in background
             chrome_options.add_argument('--no-sandbox')
             chrome_options.add_argument('--disable-dev-shm-usage')
             chrome_options.add_argument('--disable-gpu')
-            chrome_options.add_argument('--disable-images')  # Don't load images
-            chrome_options.add_argument('--disable-javascript')  # Disable JS if not needed
-            chrome_options.add_argument('--disable-css')  # Disable CSS loading
-            chrome_options.add_argument('--disable-plugins')
-            chrome_options.add_argument('--disable-extensions')
             chrome_options.add_argument('--window-size=1920,1080')
             chrome_options.add_argument(f'--user-agent={self.headers["User-Agent"]}')
             
-            # Page load strategy - don't wait for all resources
-            chrome_options.add_argument('--page-load-strategy=eager')
-            
             self.driver = webdriver.Chrome(options=chrome_options)
-            self.driver.implicitly_wait(5)  # Reduce implicit wait
             print("Selenium WebDriver initialized")
         except Exception as e:
             print(f"Error setting up Selenium: {e}")
-
-    def get_branch_availability(self, detail_link):
-        """Optimized branch availability check"""
-        if not detail_link:
-            return None
-            
-        try:
-            self.driver.get(detail_link)
-            
-            # Use WebDriverWait instead of sleep
-            wait = WebDriverWait(self.driver, 10)
-            
-            # Wait for availability button and click
-            availability_button = wait.until(
-                EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/div/main/div/div/section[1]/div/div[3]/div/div/div[2]/div[1]/div/button"))
-            )
-            availability_button.click()
-            
-            # Wait for tbody to be present
-            tbody = wait.until(EC.presence_of_element_located((By.TAG_NAME, "tbody")))
-            text = tbody.text
-
-            branch_names = self.extract_available_locations(text)
-            
-            # Fix the redundant loop
-            branch_info = []
-            for branch in branch_names:
-                branch_info.append({'branch': branch})
-                
-                
-            #Click back out
-            
-            # Wait for availability button and click
-            availability_button = wait.until(
-                EC.element_to_be_clickable((By.XPATH, "/html/body/div[24]/div/button"))
-            )
-            availability_button.click()
-            
-            wait = WebDriverWait(self.driver, 10)
-            
-           
-            
-            return branch_info
-            
-        except Exception as e:
-            print(f"Error with Selenium availability: {e}")
-            return None
-        
             
     def __del__(self):
         """Clean up Selenium driver"""
         if self.driver:
             self.driver.quit()
     
-    def extract_available_locations(self, tbody_text):
-        lines = tbody_text.strip().split('\n')
-        available_locations = []
+    def extract_branch_names(self, tbody_text):
+        # Pattern to match branch names (words ending with "BRANCH" or specific library names)
+        pattern = r'^([A-Z][A-Z\s\-\.]+(?:BRANCH|LIBRARY))(?:\s*-\s*[A-Za-z\s]+)?$'
         
-        # Find the "Available" section
-        in_available_section = False
+        lines = tbody_text.strip().split('\n')
+        branch_names = []
         
         for line in lines:
             line = line.strip()
-            
-            # Check if we're entering the Available section
-            if line.startswith('Available ('):
-                in_available_section = True
-                continue
-            
-            # Check if we're leaving the Available section
-            if line.startswith('On order (') or line.startswith('Not available at this time ('):
-                in_available_section = False
-                continue
-            
-            # If we're in the Available section, look for location names
-            if in_available_section and line:
-                # Skip collection and call number lines
-                if ('Collection' not in line and 
-                    'FIC' not in line and 
-                    line != 'Available' and
-                    not line.startswith('**')):
-                    
-                    # Check if it's a location (contains BRANCH, LIBRARY, BOOKMOBILE, etc.)
-                    if re.search(r'(BRANCH|LIBRARY|BOOKMOBILE|BOOKS BY MAIL)', line, re.IGNORECASE):
-                        available_locations.append(line)
+            match = re.match(pattern, line)
+            if match:
+                branch_names.append(match.group(1).strip())
         
-        return available_locations
+        return list(set(branch_names))  # Remove duplicates
     
-    
+    def get_branch_availability(self, detail_link):
+        """Get detailed branch availability from the book's detail page"""
+        if not detail_link:
+            return None
+            
+        try:
+            response = requests.get(detail_link, headers=self.headers)
+            response.raise_for_status()
+            
+            soup = BeautifulSoup(response.text, 'html.parser')
+            
+            # Look for branch availability information
+            # This selector may need adjustment based on actual HTML structure
+            branch_info = []
+            branches = soup.find_all('div', class_='cp-item-availability-table')
+            
+            #Selenium stuff here
+            try:
+                self.driver.get(detail_link)
+            #    self.driver.find_element_by_id()
+                time.sleep(2)
+                availibility_button = self.driver.find_element(By.XPATH, "/html/body/div[1]/div/div/main/div/div/section[1]/div/div[3]/div/div/div[2]/div[1]/div/button")
+            
+                availibility_button.click()
+                time.sleep(2)
+                
+             
+                tbody = self.driver.find_element(By.TAG_NAME, "tbody")
+                text = tbody.text
+
+                branch_names = self.extract_branch_names(text)
+                for branch in sorted(branch_names):
+                    print(branch)
+                
+                
+                # wait = WebDriverWait(self.driver, 10)
+                # wait.until(EC.presence_of_element_located((By.CLASS_NAME, "new-content")))
+
+                # html = self.driver.page_source
+                # print(html)
+
+                # for e in elements:
+                #     print(e)
+                
+                
+                
+            except Exception as e:
+                print(f"Error with Selenium availability: {e}")
+                return None
+            
           
+            for branch in branches:
+                branch_name = branch.find('span', class_='branch-name')
+                branch_status = branch.find('span', class_='availability-status')
+              
+                
+                if branch_name and branch_status:
+                    branch_info.append({
+                        'branch': branch_name.get_text(strip=True),
+                        'status': branch_status.get_text(strip=True)
+                    })
+            
+            
+            return branch_info
+            
+        except requests.RequestException as e:
+            print(f"Error getting branch availability: {e}")
+            return None
     
     def check_books(self, books: List[Book], preferred_branch=None):
         """Check availability for a list of books from Goodreads"""
@@ -406,7 +382,7 @@ if __name__ == "__main__":
             if result['branch_availability']:
                 print("Branch availability:")
                 for branch in result['branch_availability']:
-                    print(f"  - Branch:: {branch['branch']}")
+                    print(f"  - {branch['branch']}: {branch['status']}")
         else:
             print("❌ Not found in library system")
     
