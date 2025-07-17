@@ -147,7 +147,8 @@ class PBCLibraryScraper:
                     # Extract book title
                 title_elem = book_items.find('span', class_='title-content')
                 book_title = title_elem.get_text(strip=True) if title_elem else "Unknown"
-                    
+
+             
                 # Extract author
                 author_elem = book_items.find('span', class_='cp-author-link')
                 book_author = author_elem.get_text(strip=True) if author_elem else "Unknown"
@@ -160,9 +161,13 @@ class PBCLibraryScraper:
                 availability_elem = book_items.find('span', class_='cp-availability-status')
                 availability = "Available"
                 if availability_elem:
-                    availability_text = availability_elem.get_text(strip=True)
-                    if 'unavailable' in availability_elem.get('class', []):
-                        availability = availability_text
+                    text = availability_elem.get_text().strip()
+                    if text == "Available":
+                        availability = "Available"
+                    elif text == "All copies in use":
+                        availability = "Unavailable"
+                    else:
+                        availability = "Unknown"  # Handle other cases
                     
                 # Extract format information
                 format_elem = book_items.find('li', class_='bib-field-value')
@@ -237,6 +242,7 @@ class PBCLibraryScraper:
         
         return list(set(branch_names))  # Remove duplicates
     
+
     def get_branch_availability(self, detail_link):
         """Selenium-based availability check with optimizations"""
         if not self.driver:
@@ -244,30 +250,49 @@ class PBCLibraryScraper:
             
         try:
             self.driver.get(detail_link)
+
             
             # Use WebDriverWait instead of time.sleep
-            wait = WebDriverWait(self.driver, 2)
-            
+            wait = WebDriverWait(self.driver, 5)
+
             # Wait for availability button to be clickable
             availability_button = wait.until(
                 EC.element_to_be_clickable((By.XPATH, "/html/body/div[1]/div/div/main/div/div/section[1]/div/div[3]/div/div/div[2]/div[1]/div/button"))
             )
             
             availability_button.click()
+
+            availability_elem = WebDriverWait(self.driver, 10).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, ".cp-heading.heading-medium.availability-group-heading.heading--linked"))
+    )
+            if "Not available" in availability_elem.text:
+                availability = "Unavailable"
+            else:
+                availability = "Available"
             
             # Wait for tbody to be present after click
-            tbody = wait.until(
-                EC.presence_of_element_located((By.TAG_NAME, "tbody"))
-            )
-            
-            text = tbody.text
-            branch_names = self.extract_branch_names(text)
-            
+
+            if availability == "Available":
+                tbody = wait.until(
+                    EC.presence_of_element_located((By.TAG_NAME, "tbody"))
+                )
+                
+                text = tbody.text
+                branch_names = self.extract_branch_names(text)
+            else:
+                branch_names = []
+
+          
+
+           
+            results = []
             branch_info = []
             for branch in branch_names:
                 branch_info.append({'branch': branch})
-                
-            return branch_info
+            
+            results.append(availability) #first index is availibility
+            results.append(branch_info) #second index is available branches
+            return results
             
         except Exception as e:
             print(f"Selenium availability check failed: {e}")
@@ -290,7 +315,17 @@ class PBCLibraryScraper:
                     branch_availability = None
                     if result['availability'] == 'Available' and result['detail_link']:
                         branch_availability = self.get_branch_availability(result['detail_link'])
-                    
+                    #******
+
+
+                    if branch_availability:
+                        availability = branch_availability[0]
+                        branches = branch_availability[1]
+                    else:
+                        availability = None
+                        branches = None
+
+                    #***
                     result_data = {
                         'original_title': book.title,
                         'original_author': book.author,
@@ -299,9 +334,9 @@ class PBCLibraryScraper:
                         'found_title': result['title'],
                         'found_author': result['author'],
                         'format': result['format'],
-                        'availability': result['availability'],
+                        'availability': availability,
                         'detail_link': result['detail_link'],
-                        'branch_availability': branch_availability
+                        'branch_availability': branches
                     }
                     
                     results.append(result_data)

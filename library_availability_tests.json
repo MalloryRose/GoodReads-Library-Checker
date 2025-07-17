@@ -7,13 +7,9 @@
     "found_title": "The Nightingale",
     "found_author": "Kristin Hannah",
     "format": "Unknown",
-    "availability": "Available",
+    "availability": "Unavailable",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/934138212",
-    "branch_availability": [
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      }
-    ]
+    "branch_availability": []
   },
   {
     "original_title": "Where the Crawdads Sing",
@@ -27,19 +23,13 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/682452212",
     "branch_availability": [
       {
-        "branch": "OKEECHOBEE BLVD BRANCH"
+        "branch": "BELLE GLADE BRANCH"
       },
       {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "CANYON BRANCH"
+        "branch": "WELLINGTON BRANCH"
       },
       {
         "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
       },
       {
         "branch": "CLARENCE E. ANTHONY BRANCH"
@@ -51,10 +41,13 @@
         "branch": "JUPITER BRANCH"
       },
       {
-        "branch": "BELLE GLADE BRANCH"
+        "branch": "GARDENS BRANCH"
       },
       {
-        "branch": "WELLINGTON BRANCH"
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
       }
     ]
   },
@@ -66,12 +59,8 @@
     "found_title": "The Seven Husbands of Evelyn Hugo",
     "found_author": "Taylor Jenkins Reid",
     "format": "Unknown",
-    "availability": "Available",
+    "availability": "Unavailable",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/933745212",
-    "branch_availability": [
-      {
-        "branch": "MAIN LIBRARY"
-      }
-    ]
+    "branch_availability": []
   }
 ]

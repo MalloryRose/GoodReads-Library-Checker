@@ -7,49 +7,9 @@
     "found_title": "Project Hail Mary",
     "found_author": "Andy Weir",
     "format": "Unknown",
-    "availability": "Available",
+    "availability": "Unavailable",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/808813212",
-    "branch_availability": [
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "LOULA V. YORK BRANCH"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "TEQUESTA BRANCH"
-      },
-      {
-        "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      }
-    ]
+    "branch_availability": []
   },
   {
     "original_title": "Atmosphere",
@@ -87,13 +47,13 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/829710212",
     "branch_availability": [
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      },
-      {
         "branch": "BELLE GLADE BRANCH"
       },
       {
         "branch": "MAIN LIBRARY"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
       }
     ]
   },
@@ -109,19 +69,19 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/762070212",
     "branch_availability": [
       {
-        "branch": "CANYON BRANCH"
-      },
-      {
         "branch": "GREENACRES BRANCH"
       },
       {
         "branch": "WEST BOCA BRANCH"
       },
       {
-        "branch": "LANTANA ROAD BRANCH"
+        "branch": "JUPITER BRANCH"
       },
       {
-        "branch": "JUPITER BRANCH"
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
       },
       {
         "branch": "WELLINGTON BRANCH"
@@ -152,22 +112,19 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/881487212",
     "branch_availability": [
       {
-        "branch": "GLADES ROAD BRANCH"
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "CANYON BRANCH"
       },
       {
         "branch": "LANTANA ROAD BRANCH"
       },
       {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
         "branch": "WELLINGTON BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -186,7 +143,7 @@
         "branch": "GREENACRES BRANCH"
       },
       {
-        "branch": "JUPITER BRANCH"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
@@ -195,10 +152,7 @@
         "branch": "WEST BOYNTON BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
+        "branch": "JUPITER BRANCH"
       }
     ]
   },
@@ -214,19 +168,22 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/256892212",
     "branch_availability": [
       {
-        "branch": "OKEECHOBEE BLVD BRANCH"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
-        "branch": "GLADES ROAD BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
       },
       {
+        "branch": "CANYON BRANCH"
+      },
+      {
         "branch": "CLARENCE E. ANTHONY BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -242,16 +199,16 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/557453212",
     "branch_availability": [
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      },
-      {
-        "branch": "CANYON BRANCH"
+        "branch": "MAIN LIBRARY"
       },
       {
         "branch": "WELLINGTON BRANCH"
       },
       {
-        "branch": "MAIN LIBRARY"
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "CANYON BRANCH"
       }
     ]
   },
@@ -267,7 +224,40 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/236420212",
     "branch_availability": [
       {
+        "branch": "GREENACRES BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "GARDENS BRANCH"
+      },
+      {
+        "branch": "WEST BOCA BRANCH"
+      },
+      {
         "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "LOULA V. YORK BRANCH"
+      },
+      {
+        "branch": "CLARENCE E. ANTHONY BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
       },
       {
         "branch": "BELLE GLADE BRANCH"
@@ -276,43 +266,10 @@
         "branch": "MAIN LIBRARY"
       },
       {
-        "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "LOULA V. YORK BRANCH"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
         "branch": "TEQUESTA BRANCH"
       },
       {
-        "branch": "CLARENCE E. ANTHONY BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -326,14 +283,7 @@
     "format": "Unknown",
     "availability": "Available",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/796325212",
-    "branch_availability": [
-      {
-        "branch": "TEQUESTA BRANCH"
-      },
-      {
-        "branch": "ACREAGE BRANCH"
-      }
-    ]
+    "branch_availability": []
   },
   {
     "original_title": "Empire of Pain: The Secret History of the Sackler Dynasty",
@@ -347,28 +297,28 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/803878212",
     "branch_availability": [
       {
-        "branch": "OKEECHOBEE BLVD BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
         "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "ACREAGE BRANCH"
       },
       {
         "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "GARDENS BRANCH"
+      },
+      {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
+      },
+      {
+        "branch": "ACREAGE BRANCH"
       }
     ]
   },
@@ -384,34 +334,34 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/838533212",
     "branch_availability": [
       {
-        "branch": "OKEECHOBEE BLVD BRANCH"
-      },
-      {
-        "branch": "CANYON BRANCH"
-      },
-      {
         "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "TEQUESTA BRANCH"
       },
       {
         "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
         "branch": "WELLINGTON BRANCH"
+      },
+      {
+        "branch": "TEQUESTA BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -435,28 +385,9 @@
     "found_title": "Dune",
     "found_author": "Frank Herbert",
     "format": "Unknown",
-    "availability": "Available",
+    "availability": "Unavailable",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/832087212",
-    "branch_availability": [
-      {
-        "branch": "BELLE GLADE BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      }
-    ]
+    "branch_availability": []
   },
   {
     "original_title": "Kitchen Confidential: Adventures in the Culinary Underbelly",
@@ -470,6 +401,9 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/419231212",
     "branch_availability": [
       {
+        "branch": "MAIN LIBRARY"
+      },
+      {
         "branch": "WEST BOYNTON BRANCH"
       },
       {
@@ -477,9 +411,6 @@
       },
       {
         "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
       }
     ]
   },
@@ -495,37 +426,37 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/907058212",
     "branch_availability": [
       {
-        "branch": "OKEECHOBEE BLVD BRANCH"
-      },
-      {
-        "branch": "CANYON BRANCH"
-      },
-      {
         "branch": "WEST BOCA BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "TEQUESTA BRANCH"
       },
       {
         "branch": "GARDENS BRANCH"
       },
       {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
         "branch": "WELLINGTON BRANCH"
+      },
+      {
+        "branch": "TEQUESTA BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -553,22 +484,22 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/887424212",
     "branch_availability": [
       {
-        "branch": "OKEECHOBEE BLVD BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
         "branch": "GREENACRES BRANCH"
       },
       {
-        "branch": "GLADES ROAD BRANCH"
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "JUPITER BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
+        "branch": "MAIN LIBRARY"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -584,25 +515,28 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/478691212",
     "branch_availability": [
       {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
         "branch": "OKEECHOBEE BLVD BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "JUPITER BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
       },
       {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
+      },
+      {
+        "branch": "WELLINGTON BRANCH"
+      },
+      {
         "branch": "TEQUESTA BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -614,7 +548,7 @@
     "found_title": "The Creative Act",
     "found_author": "Rick Rubin",
     "format": "Unknown",
-    "availability": "All copies in use",
+    "availability": null,
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/866375212",
     "branch_availability": null
   },
@@ -630,7 +564,7 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/488728212",
     "branch_availability": [
       {
-        "branch": "GLADES ROAD BRANCH"
+        "branch": "GREENACRES BRANCH"
       },
       {
         "branch": "HAGEN RANCH ROAD BRANCH"
@@ -639,7 +573,7 @@
         "branch": "CANYON BRANCH"
       },
       {
-        "branch": "GREENACRES BRANCH"
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -671,31 +605,37 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/840966212",
     "branch_availability": [
       {
-        "branch": "OKEECHOBEE BLVD BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
         "branch": "GREENACRES BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "GARDENS BRANCH"
       },
       {
         "branch": "WEST BOCA BRANCH"
       },
       {
-        "branch": "LANTANA ROAD BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
+      },
+      {
+        "branch": "WELLINGTON BRANCH"
       },
       {
         "branch": "TEQUESTA BRANCH"
       },
       {
         "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH"
       }
     ]
   },
@@ -711,7 +651,16 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/876148212",
     "branch_availability": [
       {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "GARDENS BRANCH"
+      },
+      {
         "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "CANYON BRANCH"
       },
       {
         "branch": "BELLE GLADE BRANCH"
@@ -720,22 +669,13 @@
         "branch": "MAIN LIBRARY"
       },
       {
-        "branch": "CANYON BRANCH"
+        "branch": "WELLINGTON BRANCH"
       },
       {
         "branch": "TEQUESTA BRANCH"
       },
       {
         "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "WELLINGTON BRANCH"
       }
     ]
   },
@@ -751,13 +691,13 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/750332212",
     "branch_availability": [
       {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
         "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "GARDENS BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -773,19 +713,19 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/878605212",
     "branch_availability": [
       {
-        "branch": "CANYON BRANCH"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
       },
       {
-        "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH"
+        "branch": "CANYON BRANCH"
       },
       {
         "branch": "WELLINGTON BRANCH"
+      },
+      {
+        "branch": "ACREAGE BRANCH"
       }
     ]
   },
@@ -801,34 +741,34 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/505549212",
     "branch_availability": [
       {
-        "branch": "OKEECHOBEE BLVD BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
         "branch": "GREENACRES BRANCH"
       },
       {
-        "branch": "GLADES ROAD BRANCH"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
       },
       {
+        "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
+      },
+      {
         "branch": "TEQUESTA BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -844,34 +784,19 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/827531212",
     "branch_availability": [
       {
-        "branch": "BELLE GLADE BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "CANYON BRANCH"
-      },
-      {
         "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "LOULA V. YORK BRANCH"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
       },
       {
         "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
-        "branch": "JUPITER BRANCH"
+        "branch": "WEST BOCA BRANCH"
       },
       {
-        "branch": "LANTANA ROAD BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "ACREAGE BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
@@ -880,10 +805,28 @@
         "branch": "WEST BOYNTON BRANCH"
       },
       {
-        "branch": "ACREAGE BRANCH"
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "LOULA V. YORK BRANCH"
       },
       {
         "branch": "CLARENCE E. ANTHONY BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "BELLE GLADE BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -898,6 +841,9 @@
     "availability": "Available",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/187194212",
     "branch_availability": [
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
       {
         "branch": "HAGEN RANCH ROAD BRANCH"
       },
@@ -918,7 +864,13 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/774848212",
     "branch_availability": [
       {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
         "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
       },
       {
         "branch": "CANYON BRANCH"
@@ -927,16 +879,10 @@
         "branch": "LANTANA ROAD BRANCH"
       },
       {
-        "branch": "JUPITER BRANCH"
+        "branch": "WELLINGTON BRANCH"
       },
       {
         "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      },
-      {
-        "branch": "WELLINGTON BRANCH"
       }
     ]
   },
@@ -964,7 +910,43 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/899958212",
     "branch_availability": [
       {
+        "branch": "GLADES ROAD BRANCH"
+      },
+      {
+        "branch": "GREENACRES BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "GARDENS BRANCH"
+      },
+      {
+        "branch": "WEST BOCA BRANCH"
+      },
+      {
         "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "LOULA V. YORK BRANCH"
+      },
+      {
+        "branch": "CLARENCE E. ANTHONY BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
       },
       {
         "branch": "BELLE GLADE BRANCH"
@@ -973,49 +955,13 @@
         "branch": "MAIN LIBRARY"
       },
       {
-        "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
-        "branch": "LOULA V. YORK BRANCH"
-      },
-      {
-        "branch": "WEST BOCA BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
+        "branch": "WELLINGTON BRANCH"
       },
       {
         "branch": "TEQUESTA BRANCH"
       },
       {
         "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "CLARENCE E. ANTHONY BRANCH"
-      },
-      {
-        "branch": "GARDENS BRANCH"
-      },
-      {
-        "branch": "WELLINGTON BRANCH"
       }
     ]
   },
@@ -1034,19 +980,19 @@
         "branch": "GREENACRES BRANCH"
       },
       {
-        "branch": "LOULA V. YORK BRANCH"
-      },
-      {
         "branch": "WEST BOCA BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
       },
       {
         "branch": "ACREAGE BRANCH"
       },
       {
+        "branch": "LOULA V. YORK BRANCH"
+      },
+      {
         "branch": "WELLINGTON BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -1062,13 +1008,13 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/564114212",
     "branch_availability": [
       {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
         "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
-        "branch": "BELLE GLADE BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
+        "branch": "JUPITER BRANCH"
       },
       {
         "branch": "CANYON BRANCH"
@@ -1077,22 +1023,19 @@
         "branch": "LOULA V. YORK BRANCH"
       },
       {
+        "branch": "CLARENCE E. ANTHONY BRANCH"
+      },
+      {
         "branch": "LANTANA ROAD BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
+        "branch": "BELLE GLADE BRANCH"
       },
       {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
+        "branch": "MAIN LIBRARY"
       },
       {
         "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "CLARENCE E. ANTHONY BRANCH"
       }
     ]
   },
@@ -1108,31 +1051,7 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/905685212",
     "branch_availability": [
       {
-        "branch": "OKEECHOBEE BLVD BRANCH"
-      },
-      {
-        "branch": "BELLE GLADE BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "CANYON BRANCH"
-      },
-      {
-        "branch": "LOULA V. YORK BRANCH"
-      },
-      {
         "branch": "WEST BOCA BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "ACREAGE BRANCH"
       },
       {
         "branch": "HAGEN RANCH ROAD BRANCH"
@@ -1141,7 +1060,31 @@
         "branch": "GARDENS BRANCH"
       },
       {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "ACREAGE BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "LOULA V. YORK BRANCH"
+      },
+      {
+        "branch": "BELLE GLADE BRANCH"
+      },
+      {
+        "branch": "MAIN LIBRARY"
+      },
+      {
         "branch": "WELLINGTON BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
       }
     ]
   },
@@ -1153,9 +1096,13 @@
     "found_title": "The House in the Cerulean Sea",
     "found_author": "TJ Klune",
     "format": "Unknown",
-    "availability": "All copies in use",
+    "availability": "Available",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/757996212",
-    "branch_availability": null
+    "branch_availability": [
+      {
+        "branch": "WEST BOYNTON BRANCH"
+      }
+    ]
   },
   {
     "original_title": "Dark Matter",
@@ -1165,34 +1112,9 @@
     "found_title": "Dark Matter",
     "found_author": "Blake Crouch",
     "format": "Unknown",
-    "availability": "Available",
+    "availability": "Unavailable",
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/587709212",
-    "branch_availability": [
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH"
-      },
-      {
-        "branch": "MAIN LIBRARY"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "TEQUESTA BRANCH"
-      },
-      {
-        "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      }
-    ]
+    "branch_availability": []
   },
   {
     "original_title": "The Housemaid (The Housemaid, #1)",
@@ -1202,16 +1124,9 @@
     "found_title": "The Housemaid",
     "found_author": "Freida McFadden",
     "format": "Unknown",
-    "availability": "Available",
+    "availability": null,
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/874386212",
-    "branch_availability": [
-      {
-        "branch": "WEST BOYNTON BRANCH"
-      },
-      {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      }
-    ]
+    "branch_availability": null
   },
   {
     "original_title": "The Silent Patient",
@@ -1225,10 +1140,16 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/701870212",
     "branch_availability": [
       {
-        "branch": "GARDENS BRANCH"
+        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "BELLE GLADE BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "GARDENS BRANCH"
       }
     ]
   }
