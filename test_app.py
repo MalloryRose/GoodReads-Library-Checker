@@ -1,6 +1,6 @@
 
 import unittest
-from app import Book, GoodreadsExtractor, PBCLibraryScraper
+from library_scraper import Book, GoodreadsExtractor, PBCLibraryScraper
 
 class TestGoodreadsExtractor(unittest.TestCase):
 
