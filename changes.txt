@@ -1,5 +1,3 @@
 Updates to be made:
 
-1. Get rid of duplicate branches
-2. Get rid of extra parenthesis in the title search for an exact book
-
+1. Glitch: Atmosphere shows as available but doesn't show the branches

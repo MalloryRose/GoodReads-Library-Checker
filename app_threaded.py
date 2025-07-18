@@ -453,6 +453,8 @@ class PBCLibraryScraper:
                         'detail_link': None,
                         'branch_availability': None
                     })
+
+                   
         
         return all_results
     
@@ -485,7 +487,7 @@ if __name__ == "__main__":
     print(f"Found {len(books)} books to check")
     
     # Initialize scraper with 3 workers (adjust based on your system and rate limits)
-    scraper = PBCLibraryScraper(max_workers=3)
+    scraper = PBCLibraryScraper(max_workers=5)
     
     try:
         # Check availability
