@@ -33,7 +33,7 @@ You'll also need to install ChromeDriver for Selenium:
 
 2. **Run the script**:
    ```bash
-   python library_scraper.py
+   python library_scraper_threaded.py
    ```
 
 3. **View results**:
@@ -45,7 +45,7 @@ You'll also need to install ChromeDriver for Selenium:
 ### Using Your Goodreads CSV Export
 
 ```python
-from library_scraper import GoodreadsExtractor, PBCLibraryScraper
+from library_scraper_threaded import GoodreadsExtractor, PBCLibraryScraper
 
 # Load books from your Goodreads export
 extractor = GoodreadsExtractor()
@@ -59,7 +59,7 @@ results = scraper.check_books(books)
 ### Manual Book List
 
 ```python
-from library_scraper import Book, PBCLibraryScraper
+from library_scraper_threaded import Book, PBCLibraryScraper
 
 # Create book list manually
 books = [
@@ -210,38 +210,6 @@ scraper = PBCLibraryScraper(max_workers=2)
 - Check file encoding (should be UTF-8)
 - Verify file path is correct
 
-### Debug Mode
-
-Enable verbose logging for troubleshooting:
-
-```python
-import logging
-logging.basicConfig(level=logging.DEBUG)
-```
-
-## 📋 Requirements
-
-### Python Packages
-```
-requests>=2.25.0
-beautifulsoup4>=4.9.0
-selenium>=4.0.0
-```
-
-### System Requirements
-- Python 3.7+
-- Google Chrome browser
-- ChromeDriver (matching your Chrome version)
-- 4GB+ RAM recommended for multithreading
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
 ### Development Setup
 
 ```bash
@@ -256,14 +224,6 @@ pip install -r requirements.txt
 python -m pytest tests/
 ```
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## ⚠️ Disclaimer
-
-This tool is for personal use only. Please respect the library's terms of service and avoid overwhelming their servers with excessive requests. The scraper includes rate limiting to be respectful of the library's resources.
-
 ## 🔮 Future Enhancements
 
 - [ ] Support for multiple library systems
@@ -274,12 +234,3 @@ This tool is for personal use only. Please respect the library's terms of servic
 - [ ] Export to other formats (Excel, PDF)
 - [ ] Scheduling for regular checks
 
-## 📞 Support
-
-- **Issues**: Report bugs via GitHub Issues
-- **Questions**: Check the FAQ or create a discussion
-- **Feature Requests**: Submit via GitHub Issues with the enhancement label
-
----
-
-**Happy reading! 📚✨**
