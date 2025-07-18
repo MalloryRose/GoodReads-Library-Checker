@@ -50,10 +50,10 @@
         "branch": "BELLE GLADE BRANCH"
       },
       {
-        "branch": "MAIN LIBRARY"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
+        "branch": "MAIN LIBRARY"
       }
     ]
   },
@@ -69,22 +69,22 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/762070212",
     "branch_availability": [
       {
-        "branch": "WELLINGTON BRANCH"
-      },
-      {
-        "branch": "CANYON BRANCH"
+        "branch": "GREENACRES BRANCH"
       },
       {
         "branch": "JUPITER BRANCH"
       },
       {
-        "branch": "GREENACRES BRANCH"
+        "branch": "WEST BOCA BRANCH"
       },
       {
         "branch": "LANTANA ROAD BRANCH"
       },
       {
-        "branch": "WEST BOCA BRANCH"
+        "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "WELLINGTON BRANCH"
       }
     ]
   },
@@ -112,16 +112,16 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/881487212",
     "branch_availability": [
       {
-        "branch": "WELLINGTON BRANCH"
+        "branch": "GLADES ROAD BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
       },
       {
         "branch": "CANYON BRANCH"
       },
       {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "LANTANA ROAD BRANCH"
+        "branch": "WELLINGTON BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
@@ -140,16 +140,16 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/376283212",
     "branch_availability": [
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
+        "branch": "GREENACRES BRANCH"
       },
       {
         "branch": "JUPITER BRANCH"
       },
       {
-        "branch": "GREENACRES BRANCH"
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "WEST BOYNTON BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
@@ -168,22 +168,22 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/256892212",
     "branch_availability": [
       {
+        "branch": "GLADES ROAD BRANCH"
+      },
+      {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
         "branch": "CANYON BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
       },
       {
         "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "CLARENCE E. ANTHONY BRANCH"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
       }
     ]
   },
@@ -199,16 +199,16 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/557453212",
     "branch_availability": [
       {
-        "branch": "WELLINGTON BRANCH"
+        "branch": "MAIN LIBRARY"
       },
       {
-        "branch": "MAIN LIBRARY"
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "CANYON BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
+        "branch": "WELLINGTON BRANCH"
       }
     ]
   },
@@ -224,28 +224,10 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/236420212",
     "branch_availability": [
       {
-        "branch": "CANYON BRANCH"
+        "branch": "BELLE GLADE BRANCH"
       },
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      },
-      {
-        "branch": "CLARENCE E. ANTHONY BRANCH"
-      },
-      {
-        "branch": "WEST BOYNTON BRANCH"
-      },
-      {
-        "branch": "LOULA V. YORK BRANCH"
-      },
-      {
-        "branch": "ROYAL PALM BEACH BRANCH"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH"
+        "branch": "GREENACRES BRANCH"
       },
       {
         "branch": "GLADES ROAD BRANCH"
@@ -254,22 +236,40 @@
         "branch": "GARDENS BRANCH"
       },
       {
-        "branch": "GREENACRES BRANCH"
+        "branch": "JUPITER BRANCH"
       },
       {
         "branch": "MAIN LIBRARY"
       },
       {
-        "branch": "TEQUESTA BRANCH"
+        "branch": "WEST BOCA BRANCH"
       },
       {
         "branch": "LANTANA ROAD BRANCH"
       },
       {
-        "branch": "BELLE GLADE BRANCH"
+        "branch": "CANYON BRANCH"
       },
       {
-        "branch": "WEST BOCA BRANCH"
+        "branch": "LOULA V. YORK BRANCH"
+      },
+      {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "ROYAL PALM BEACH BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
+      },
+      {
+        "branch": "TEQUESTA BRANCH"
+      },
+      {
+        "branch": "WEST BOYNTON BRANCH"
+      },
+      {
+        "branch": "CLARENCE E. ANTHONY BRANCH"
       }
     ]
   },
@@ -297,13 +297,7 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/803878212",
     "branch_availability": [
       {
-        "branch": "HAGEN RANCH ROAD BRANCH"
-      },
-      {
         "branch": "ACREAGE BRANCH"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH"
       },
       {
         "branch": "GREENACRES BRANCH"
@@ -316,6 +310,12 @@
       },
       {
         "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
+        "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
@@ -334,31 +334,31 @@
     "detail_link": "https://pbclibrary.bibliocommons.com/item/show/838533212",
     "branch_availability": [
       {
+        "branch": "GREENACRES BRANCH"
+      },
+      {
+        "branch": "GLADES ROAD BRANCH"
+      },
+      {
+        "branch": "JUPITER BRANCH"
+      },
+      {
+        "branch": "LANTANA ROAD BRANCH"
+      },
+      {
+        "branch": "OKEECHOBEE BLVD BRANCH"
+      },
+      {
         "branch": "WELLINGTON BRANCH"
       },
       {
         "branch": "HAGEN RANCH ROAD BRANCH"
       },
       {
-        "branch": "WEST BOYNTON BRANCH"
-      },
-      {
-        "branch": "JUPITER BRANCH"
-      },
-      {
-        "branch": "OKEECHOBEE BLVD BRANCH"
-      },
-      {
-        "branch": "GLADES ROAD BRANCH"
-      },
-      {
-        "branch": "GREENACRES BRANCH"
-      },
-      {
         "branch": "TEQUESTA BRANCH"
       },
       {
-        "branch": "LANTANA ROAD BRANCH"
+        "branch": "WEST BOYNTON BRANCH"
       },
       {
         "branch": "ROYAL PALM BEACH BRANCH"
