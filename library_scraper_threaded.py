@@ -487,7 +487,7 @@ if __name__ == "__main__":
     print(f"Found {len(books)} books to check")
     
     # Initialize scraper with 3 workers (adjust based on your system and rate limits)
-    scraper = PBCLibraryScraper(max_workers=5)
+    scraper = PBCLibraryScraper(max_workers=3)
     
     try:
         # Check availability
