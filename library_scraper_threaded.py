@@ -550,24 +550,40 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
             self.driver_pool.return_driver(driver)
 
     def parse_search_results(self, html_content, original_book: Book):
-        with open("acld_search_debug.html", "w", encoding="utf-8") as f:
-            f.write(html_content)
-        print("Saved HTML content to acld_search_debug.html and opening in browser...")
-        webbrowser.open("acld_search_debug.html")
+        # Save the HTML content to a file
+        # with open("acld_search_debug.html", "w", encoding="utf-8") as f:
+        #     f.write(html_content)
+        # print("Saved HTML content to acld_search_debug.html and opening in browser...")
+        # webbrowser.open("acld_search_debug.html")
         soup = BeautifulSoup(html_content, 'html.parser')
         results = []
         # Polaris catalog: look for result rows
+        # Rows is a list of all of the possible results
         rows = soup.find_all('div', class_='content-module content-module--search-result')
         for row in rows:
             try:
-                title_elem = row.find('span', class_="nsm-hit-text")
-                book_title = title_elem.get_text(strip=True) if title_elem else "Unknown"
+                # Find all the title parts
+                title_div = row.find('div', class_="nsm-brief-primary-title-group")
+                if title_div:
+                    title_spans = title_div.find_all('span', class_="nsm-hit-text")
+                    book_title = " ".join([span.get_text(strip=True) for span in title_spans]) if title_spans else "Unknown"
+                else:
+                    book_title = "Unknown"
                 print(book_title)
-                detail_link = title_elem['href'] if title_elem and title_elem.has_attr('href') else None
+                # Find the parent <a> tag for the detail link (adjust selector as needed)
+                link_elem = row.find('a', href=True)
+                detail_link = link_elem['href'] if link_elem else None
                 if detail_link and not detail_link.startswith('http'):
                     detail_link = f"https://catalog.aclib.us{detail_link}"
+                    
                 # Author is not always present in the same div, so fallback to original
-                book_author = original_book.author
+                book_author_div = row.find('div', class_="nsm-brief-secondary-title-group")
+                if book_author_div:
+                    book_author_spans = book_author_div.find_all('span', class_="nsm-hit-text")
+                    book_author = " ".join([span.get_text(strip=True) for span in book_author_spans]) if book_author_spans else original_book.author
+                else:
+                    book_author = original_book.author
+                print(book_author)
                 # Format and availability are not always present in brief view
                 book_format = None
                 availability = "Unknown"
