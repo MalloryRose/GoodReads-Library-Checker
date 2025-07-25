@@ -1,3 +1,4 @@
+import html
 import requests
 import time
 import re
@@ -15,6 +16,8 @@ from selenium.webdriver.chrome.options import Options
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
 from queue import Queue
+from abc import ABC, abstractmethod
+import webbrowser
 
 
 '''
@@ -155,7 +158,16 @@ class ThreadSafeSeleniumPool:
             except:
                 pass
 
-class PBCLibraryScraper:
+class LibraryScraperBase(ABC):
+    @abstractmethod
+    def search_book(self, book: Book):
+        pass
+
+    @abstractmethod
+    def check_books(self, books: List[Book], preferred_branch=None):
+        pass
+
+class PBCLibraryScraper(LibraryScraperBase):
     def __init__(self, max_workers: int = 3):
         self.base_url = "https://pbclibrary.bibliocommons.com/v2/search"
         self.headers = {
@@ -463,6 +475,193 @@ class PBCLibraryScraper:
         if hasattr(self, 'driver_pool'):
             self.driver_pool.cleanup()
 
+# --- New AlachuaCountyLibraryScraper ---
+class AlachuaCountyLibraryScraper(LibraryScraperBase):
+    def __init__(self, max_workers: int = 3):
+        self.base_url = "https://catalog.aclib.us/search/searchresults.aspx"
+        self.headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1'
+        }
+        self.max_workers = max_workers
+        self.last_request_time = {}
+        self.request_lock = threading.Lock()
+        self.min_delay = 1.0
+        self.driver_pool = ThreadSafeSeleniumPool(max_workers)
+
+    def _rate_limit(self, thread_id):
+        with self.request_lock:
+            current_time = time.time()
+            if thread_id in self.last_request_time:
+                time_since_last = current_time - self.last_request_time[thread_id]
+                if time_since_last < self.min_delay:
+                    time.sleep(self.min_delay - time_since_last)
+            self.last_request_time[thread_id] = time.time()
+
+    def build_search_query(self, title, author):
+        # Return a dict of advanced search parameters for title and author
+        return {
+            'ctx': '1.1033.0.0.6',
+            'type': 'Advanced',
+            'term': title,
+            'relation': 'ALL',
+            'by': 'TI',
+            'term2': author,
+            'relation2': 'ALL',
+            'by2': 'AU',
+            'bool1': 'AND',
+            'bool4': 'AND',
+            'limit': 'TOM=*',
+            'sort': 'RELEVANCE',
+            'page': '0'
+        }
+
+    def search_book(self, book: Book):
+        from urllib.parse import urlencode
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        thread_id = threading.current_thread().ident
+        self._rate_limit(thread_id)
+        title = book.title.strip().replace('"', '')
+        author = book.author.strip().replace('"', '')
+        params = self.build_search_query(title, author)
+        url = f"{self.base_url}?{urlencode(params)}"
+        driver = self.driver_pool.get_driver()
+        if not driver:
+            print("Could not get Selenium driver for ACLD search.")
+            return None
+        try:
+            driver.get(url)
+            # Wait for results to load (adjust selector as needed)
+            try:
+                WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, ".content-module--search-result"))
+                )
+            except Exception as e:
+                print(f"Timeout or error waiting for ACLD search results: {e}")
+            html_content = driver.page_source
+            return self.parse_search_results(html_content, book)
+        finally:
+            self.driver_pool.return_driver(driver)
+
+    def parse_search_results(self, html_content, original_book: Book):
+        with open("acld_search_debug.html", "w", encoding="utf-8") as f:
+            f.write(html_content)
+        print("Saved HTML content to acld_search_debug.html and opening in browser...")
+        webbrowser.open("acld_search_debug.html")
+        soup = BeautifulSoup(html_content, 'html.parser')
+        results = []
+        # Polaris catalog: look for result rows
+        rows = soup.find_all('div', class_='content-module content-module--search-result')
+        for row in rows:
+            try:
+                title_elem = row.find('span', class_="nsm-hit-text")
+                book_title = title_elem.get_text(strip=True) if title_elem else "Unknown"
+                print(book_title)
+                detail_link = title_elem['href'] if title_elem and title_elem.has_attr('href') else None
+                if detail_link and not detail_link.startswith('http'):
+                    detail_link = f"https://catalog.aclib.us{detail_link}"
+                # Author is not always present in the same div, so fallback to original
+                book_author = original_book.author
+                # Format and availability are not always present in brief view
+                book_format = None
+                availability = "Unknown"
+                results.append({
+                    'title': book_title,
+                    'author': book_author,
+                    'format': book_format,
+                    'availability': availability,
+                    'detail_link': detail_link,
+                    'branch_availability': None
+                })
+            except Exception as e:
+                print(f"Error parsing ACLD result: {e}")
+        return results
+
+    def check_books(self, books: List[Book], preferred_branch=None):
+        all_results = []
+        print(f"Processing {len(books)} books with {self.max_workers} workers (Alachua County Library)...")
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            future_to_book = {executor.submit(self.process_single_book, book): book for book in books}
+            for future in as_completed(future_to_book):
+                book = future_to_book[future]
+                try:
+                    results = future.result()
+                    all_results.extend(results)
+                except Exception as e:
+                    print(f"Error processing book {book.title}: {e}")
+                    all_results.append({
+                        'original_title': book.title,
+                        'original_author': book.author,
+                        'original_isbn': book.isbn,
+                        'original_goodreads_id': book.goodreads_id,
+                        'found_title': None,
+                        'found_author': None,
+                        'format': None,
+                        'availability': 'Error',
+                        'detail_link': None,
+                        'branch_availability': None
+                    })
+        return all_results
+
+    def process_single_book(self, book: Book):
+        try:
+            print(f"Processing: {book.title} by {book.author} (ACLD)")
+            search_results = self.search_book(book)
+            if search_results:
+                results = []
+                for result in search_results:
+                    result_data = {
+                        'original_title': book.title,
+                        'original_author': book.author,
+                        'original_isbn': book.isbn,
+                        'original_goodreads_id': book.goodreads_id,
+                        'found_title': result['title'],
+                        'found_author': result['author'],
+                        'format': result['format'],
+                        'availability': result['availability'],
+                        'detail_link': result['detail_link'],
+                        'branch_availability': result['branch_availability']
+                    }
+                    results.append(result_data)
+                return results
+            else:
+                return [{
+                    'original_title': book.title,
+                    'original_author': book.author,
+                    'original_isbn': book.isbn,
+                    'original_goodreads_id': book.goodreads_id,
+                    'found_title': None,
+                    'found_author': None,
+                    'format': None,
+                    'availability': 'Not found',
+                    'detail_link': None,
+                    'branch_availability': None
+                }]
+        except Exception as e:
+            print(f"Error processing book '{book.title}' (ACLD): {e}")
+            return [{
+                'original_title': book.title,
+                'original_author': book.author,
+                'original_isbn': book.isbn,
+                'original_goodreads_id': book.goodreads_id,
+                'found_title': None,
+                'found_author': None,
+                'format': None,
+                'availability': 'Error',
+                'detail_link': None,
+                'branch_availability': None
+            }]
+
+    def __del__(self):
+        if hasattr(self, 'driver_pool'):
+            self.driver_pool.cleanup()
+
 # Example usage
 if __name__ == "__main__":
     start_time = time.time()
@@ -486,8 +685,15 @@ if __name__ == "__main__":
     
     print(f"Found {len(books)} books to check")
     
-    # Initialize scraper with 3 workers (adjust based on your system and rate limits)
-    scraper = PBCLibraryScraper(max_workers=3)
+    # --- Library system selection ---
+    print("Select library system:")
+    print("1. Palm Beach County Library (PBCLibrary)")
+    print("2. Alachua County Library (ACLD)")
+    choice = input("Enter 1 or 2: ").strip()
+    if choice == "2":
+        scraper = AlachuaCountyLibraryScraper(max_workers=3)
+    else:
+        scraper = PBCLibraryScraper(max_workers=3)
     
     try:
         # Check availability
@@ -524,7 +730,8 @@ if __name__ == "__main__":
         print("\n⚠️  Script interrupted by user")
     finally:
         # Ensure cleanup
-        scraper.driver_pool.cleanup()
+        if hasattr(scraper, 'driver_pool'):
+            scraper.driver_pool.cleanup()
     
     end_time = time.time()
     execution_time = end_time - start_time
