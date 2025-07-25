@@ -1,12 +1,13 @@
-# 📚 Palm Beach County Library Availability Checker
+# 📚 Multi-Library Book Availability Checker
 
-A Python tool that automatically checks the availability of books from your Goodreads "Want to Read" list in the Palm Beach County Library system. Features multithreaded processing for fast, efficient book checking.
+A Python tool that automatically checks the availability of books from your Goodreads "Want to Read" list in multiple library systems, including Palm Beach County Library and Alachua County Library. Features multithreaded processing for fast, efficient book checking.
 
 ## ✨ Features
 
 - **Goodreads Integration**: Import books directly from your Goodreads CSV export
 - **Multithreaded Processing**: Check multiple books simultaneously for faster results
-- **Detailed Availability**: Shows not just availability, but which library branches have copies
+- **Multiple Library Systems**: Supports Palm Beach County Library (BiblioCommons) and Alachua County Library (Polaris)
+- **Detailed Availability**: Shows not just availability, but which library branches have copies (where supported)
 - **Multiple Formats**: Supports books, audiobooks, eBooks, and other formats
 - **Rate Limiting**: Built-in protection against overwhelming the library's servers
 - **JSON Export**: Save results for later analysis or integration with other tools
@@ -35,6 +36,9 @@ You'll also need to install ChromeDriver for Selenium:
    ```bash
    python library_scraper_threaded.py
    ```
+   - You will be prompted to select a library system:
+     - `1` for Palm Beach County Library
+     - `2` for Alachua County Library
 
 3. **View results**:
    - Check console output for real-time results
@@ -45,21 +49,22 @@ You'll also need to install ChromeDriver for Selenium:
 ### Using Your Goodreads CSV Export
 
 ```python
-from library_scraper_threaded import GoodreadsExtractor, PBCLibraryScraper
+from library_scraper_threaded import GoodreadsExtractor, PBCLibraryScraper, AlachuaCountyLibraryScraper
 
 # Load books from your Goodreads export
 extractor = GoodreadsExtractor()
 books = extractor.load_from_csv("goodreads_library_export.csv")
 
-# Check availability with 3 concurrent workers
-scraper = PBCLibraryScraper(max_workers=3)
+# Check availability with 3 concurrent workers (choose your library)
+scraper = PBCLibraryScraper(max_workers=3)  # Palm Beach County
+# scraper = AlachuaCountyLibraryScraper(max_workers=3)  # Alachua County
 results = scraper.check_books(books)
 ```
 
 ### Manual Book List
 
 ```python
-from library_scraper_threaded import Book, PBCLibraryScraper
+from library_scraper_threaded import Book, PBCLibraryScraper, AlachuaCountyLibraryScraper
 
 # Create book list manually
 books = [
@@ -68,8 +73,9 @@ books = [
     Book(title="Educated", author="Tara Westover")
 ]
 
-# Check availability
+# Check availability (choose your library)
 scraper = PBCLibraryScraper(max_workers=2)
+# scraper = AlachuaCountyLibraryScraper(max_workers=2)
 results = scraper.check_books(books)
 ```
 
@@ -80,12 +86,15 @@ results = scraper.check_books(books)
 ```python
 # Conservative (slower but safer)
 scraper = PBCLibraryScraper(max_workers=2)
+# scraper = AlachuaCountyLibraryScraper(max_workers=2)
 
 # Balanced (recommended)
 scraper = PBCLibraryScraper(max_workers=3)
+# scraper = AlachuaCountyLibraryScraper(max_workers=3)
 
 # Aggressive (faster but may trigger rate limits)
 scraper = PBCLibraryScraper(max_workers=5)
+# scraper = AlachuaCountyLibraryScraper(max_workers=5)
 ```
 
 ### Rate Limiting
@@ -139,14 +148,7 @@ Branch availability:
 
 ### Custom Search Queries
 
-The scraper automatically builds optimized search queries, but you can customize the search logic:
-
-```python
-# Modify the build_search_query method for custom search logic
-def build_search_query(self, title, author):
-    # Custom implementation
-    return f"(title:({title}) AND contributor:({author}))"
-```
+The scraper automatically builds optimized search queries for each library system. You can customize the search logic by modifying the `build_search_query` method in the relevant scraper class.
 
 ### Branch Filtering
 
@@ -162,13 +164,15 @@ results = scraper.check_books(books, preferred_branch="West Palm Beach")
 ### Architecture
 
 - **GoodreadsExtractor**: Handles CSV import and data parsing
-- **PBCLibraryScraper**: Main scraping logic with multithreading
-- **ThreadSafeSeleniumPool**: Manages WebDriver instances safely
+- **PBCLibraryScraper**: Scraping logic for Palm Beach County Library (BiblioCommons)
+- **AlachuaCountyLibraryScraper**: Scraping logic for Alachua County Library (Polaris)
+- **ThreadSafeSeleniumPool**: Manages WebDriver instances safely for multithreaded Selenium use
 - **Book/LibraryResult**: Data classes for type safety
+- **LibraryScraperBase**: Abstract base class for all library scrapers
 
 ### Multithreading Safety
 
-- **Driver Pool**: Each thread gets its own WebDriver instance
+- **Driver Pool**: Each thread gets its own WebDriver instance (for both PBCLibrary and Alachua County)
 - **Rate Limiting**: Thread-safe request timing
 - **Error Handling**: Individual thread failures don't crash the entire process
 - **Resource Management**: Automatic cleanup of WebDriver instances
@@ -203,6 +207,8 @@ scraper.min_delay = 2.0
 ```python
 # Reduce WebDriver pool size
 scraper = PBCLibraryScraper(max_workers=2)
+# Or for Alachua County:
+scraper = AlachuaCountyLibraryScraper(max_workers=2)
 ```
 
 **CSV parsing errors**:
@@ -226,11 +232,12 @@ python -m pytest tests/
 
 ## 🔮 Future Enhancements
 
-- [ ] Support for multiple library systems
+- [x] Support for multiple library systems (Palm Beach County, Alachua County)
 - [ ] GUI interface
 - [ ] Email notifications for available books
 - [ ] Integration with library hold systems
 - [ ] Book recommendation based on availability
 - [ ] Export to other formats (Excel, PDF)
 - [ ] Scheduling for regular checks
+- [ ] More library systems (contributions welcome!)
 
