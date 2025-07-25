@@ -7,6 +7,7 @@ import os
 from datetime import datetime
 import webbrowser
 from library_scraper_threaded import GoodreadsExtractor, PBCLibraryScraper, Book
+from library_scraper_threaded import AlachuaCountyLibraryScraper
 
 class LibraryScraperGUI:
     def __init__(self):
@@ -24,6 +25,7 @@ class LibraryScraperGUI:
         self.min_delay = tk.DoubleVar(value=1.0)
         self.is_running = False
         self.results = []
+        self.library_system = tk.StringVar(value="PBCLibrary")
         
         # Queue for thread communication
         self.queue = queue.Queue()
@@ -112,6 +114,13 @@ class LibraryScraperGUI:
         ttk.Label(settings_frame, text="Request Delay (sec):").grid(row=0, column=2, sticky=tk.W, padx=(0, 10))
         delay_spin = ttk.Spinbox(settings_frame, from_=0.5, to=5.0, increment=0.5, textvariable=self.min_delay, width=10)
         delay_spin.grid(row=0, column=3, sticky=tk.W)
+
+        # Library System Selection
+        ttk.Label(settings_frame, text="Library System:").grid(row=1, column=0, sticky=tk.W, padx=(0, 10), pady=(10, 0))
+        library_combo = ttk.Combobox(settings_frame, textvariable=self.library_system, state="readonly", width=25)
+        library_combo['values'] = ("PBCLibrary", "AlachuaCountyLibrary")
+        library_combo.grid(row=1, column=1, sticky=tk.W, pady=(10, 0))
+        library_combo.set("PBCLibrary")
         
     def create_control_section(self, parent, row):
         """Create control buttons section"""
@@ -239,11 +248,15 @@ class LibraryScraperGUI:
             if not books:
                 self.queue.put(("error", "No books found in CSV file. Make sure it contains 'Want to Read' books."))
                 return
-                
+            
             self.queue.put(("progress", f"Found {len(books)} books to check", 0))
             
-            # Initialize scraper
-            scraper = PBCLibraryScraper(max_workers=self.max_workers.get())
+
+            # Initialize scraper based on selected library system
+            if self.library_system.get() == "AlachuaCountyLibrary":
+                scraper = AlachuaCountyLibraryScraper(max_workers=self.max_workers.get())
+            else:
+                scraper = PBCLibraryScraper(max_workers=self.max_workers.get())
             scraper.min_delay = self.min_delay.get()
             
             # Process books with progress updates
