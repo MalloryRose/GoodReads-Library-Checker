@@ -685,7 +685,7 @@ if __name__ == "__main__":
     # Load books from Goodreads CSV export
     print("Loading books from Goodreads CSV export...")
     goodreads_extractor = GoodreadsExtractor()
-    csv_file = "goodreads_library_export.csv"
+    csv_file = "data/goodreads_library_export.csv"
     books = goodreads_extractor.load_from_csv(csv_file)
     
     if not books:
@@ -736,7 +736,7 @@ if __name__ == "__main__":
                 print("❌ Not found in library system")
         
         # Save results to JSON file
-        with open('library_availability.json', 'w') as f:
+        with open('data/library_availability.json', 'w') as f:
             json.dump(results, f, indent=2)
         
         print(f"\n✅ Results saved to library_availability.json")
