@@ -36,16 +36,6 @@ class Book:
     def __str__(self):
         return f"{self.title} by {self.author}"
 
-@dataclass
-class LibraryResult:
-    """Represents library availability result"""
-    book: Book
-    available: bool
-    location: Optional[str] = None
-    call_number: Optional[str] = None
-    status: Optional[str] = None
-    url: Optional[str] = None
-
 class GoodreadsExtractor:
     """Handles extraction of books from Goodreads"""
     
@@ -88,10 +78,8 @@ class GoodreadsExtractor:
         Scrape books from Goodreads "Want to Read" shelf
         Note: This is a placeholder - you'll need to implement based on Goodreads' current structure
         """
-        # This would require web scraping with BeautifulSoup or Selenium
-        # Implementation depends on current Goodreads HTML structure
-        print("Web scraping not implemented - use CSV export method instead")
-        return []
+        pass
+        
 
 class ThreadSafeSeleniumPool:
     """Thread-safe pool of Selenium WebDriver instances"""
@@ -189,7 +177,7 @@ class PBCLibraryScraper(LibraryScraperBase):
         self.last_request_time = {}
         self.request_lock = threading.Lock()
         self.min_delay = 1.0  # Minimum delay between requests in seconds
-    
+   
     def _rate_limit(self, thread_id):
         """Implement rate limiting per thread"""
         with self.request_lock:
@@ -706,10 +694,11 @@ if __name__ == "__main__":
     print("1. Palm Beach County Library (PBCLibrary)")
     print("2. Alachua County Library (ACLD)")
     choice = input("Enter 1 or 2: ").strip()
+    max_workers = input("Enter number of workers: ").strip()
     if choice == "2":
-        scraper = AlachuaCountyLibraryScraper(max_workers=3)
+        scraper = AlachuaCountyLibraryScraper(int(max_workers))
     else:
-        scraper = PBCLibraryScraper(max_workers=3)
+        scraper = PBCLibraryScraper(int(max_workers))
     
     try:
         # Check availability

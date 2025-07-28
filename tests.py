@@ -13,7 +13,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 
-from library_scraper import *
+from library_scraper_threaded import *
 
 
 
@@ -23,11 +23,11 @@ if __name__ == "__main__":
     goodreads_extractor = GoodreadsExtractor()
     csv_file = "goodreads_library_export_copy.csv" #Use a copy with a shorter list for testing
     books = goodreads_extractor.load_from_csv(csv_file)  #A list of all the books from a GoodReads CSV File
-    # books = [
-    #         Book(title="The Nightingale", author="Kristin Hannah"),
-    #         Book(title="Where the Crawdads Sing", author="Delia Owens"),
-    #         Book(title="The Seven Husbands of Evelyn Hugo", author="Taylor Jenkins Reid")
-    #     ]
+    books = [
+            Book(title="The Nightingale", author="Kristin Hannah"),
+            Book(title="Where the Crawdads Sing", author="Delia Owens"),
+            Book(title="The Seven Husbands of Evelyn Hugo", author="Taylor Jenkins Reid")
+        ]
     print(f"Found {len(books)} books to check") 
     
      # Initialize scraper

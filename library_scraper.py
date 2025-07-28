@@ -79,8 +79,17 @@ class GoodreadsExtractor:
         """
         # This would require web scraping with BeautifulSoup or Selenium
         # Implementation depends on current Goodreads HTML structure
-        print("Web scraping not implemented - use CSV export method instead")
-        return []
+        base_url = f"https://www.goodreads.com/review/list/{user_id}?shelf=to-read"
+        response = requests.get(base_url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        books = []
+        for book in soup.find_all('div', class_='bookalike'):
+            title = book.find('h3', class_='bookTitle').text.strip()
+            author = book.find('span', class_='authorName').text.strip()
+            books.append(Book(title=title, author=author))
+        return books
+        
+       
 
 class PBCLibraryScraper:
     def __init__(self):

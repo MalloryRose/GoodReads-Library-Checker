@@ -1,3 +1,5 @@
 Updates to be made:
 
 1. Glitch: Atmosphere shows as available but doesn't show the branches
+2. Save the data as you scrape
+3. Record requests which returned errors somewhere to retry them. Automate this.
