@@ -147,18 +147,23 @@ class ThreadSafeSeleniumPool:
                 pass
 
 class LibraryScraperBase(ABC):
-    @abstractmethod
-    def search_book(self, book: Book):
-        pass
-
-    @abstractmethod
-    def check_books(self, books: List[Book], preferred_branch=None):
-        pass
-
-class PBCLibraryScraper(LibraryScraperBase):
     def __init__(self, max_workers: int = 3):
-        self.base_url = "https://pbclibrary.bibliocommons.com/v2/search"
-        self.headers = {
+        """Initialize common attributes for all library scrapers"""
+        self.max_workers = max_workers
+        self.driver_pool = ThreadSafeSeleniumPool(max_workers)
+        
+        # Thread-safe session for requests
+        self.session = requests.Session()
+        self.session.headers.update(self.get_default_headers())
+        
+        # Rate limiting
+        self.last_request_time = {}
+        self.request_lock = threading.Lock()
+        self.min_delay = 1.0  # Minimum delay between requests in seconds
+    
+    def get_default_headers(self):
+        """Return default headers for HTTP requests"""
+        return {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.5',
@@ -166,18 +171,7 @@ class PBCLibraryScraper(LibraryScraperBase):
             'Connection': 'keep-alive',
             'Upgrade-Insecure-Requests': '1'
         }
-        self.max_workers = max_workers
-        self.driver_pool = ThreadSafeSeleniumPool(max_workers)
-        
-        # Thread-safe session for requests
-        self.session = requests.Session()
-        self.session.headers.update(self.headers)
-        
-        # Rate limiting
-        self.last_request_time = {}
-        self.request_lock = threading.Lock()
-        self.min_delay = 1.0  # Minimum delay between requests in seconds
-   
+    
     def _rate_limit(self, thread_id):
         """Implement rate limiting per thread"""
         with self.request_lock:
@@ -188,6 +182,135 @@ class PBCLibraryScraper(LibraryScraperBase):
                     time.sleep(self.min_delay - time_since_last)
             self.last_request_time[thread_id] = time.time()
     
+    def clean_title(self, title):
+        """Clean book title by removing parentheses content"""
+        return re.sub(r"\s*\(.*?\)", "", title)
+    
+    def create_error_result(self, book: Book, error_type: str = 'Error'):
+        """Create a standardized error result for a book"""
+        return {
+            'original_title': book.title,
+            'original_author': book.author,
+            'original_isbn': book.isbn,
+            'original_goodreads_id': book.goodreads_id,
+            'found_title': None,
+            'found_author': None,
+            'format': None,
+            'availability': error_type,
+            'detail_link': None,
+            'branch_availability': None
+        }
+    
+    def create_not_found_result(self, book: Book):
+        """Create a standardized 'not found' result for a book"""
+        return self.create_error_result(book, 'Not found')
+    
+    def create_success_result(self, book: Book, result: dict, availability: str = None, branches: list = None):
+        """Create a standardized success result for a book"""
+        return {
+            'original_title': book.title,
+            'original_author': book.author,
+            'original_isbn': book.isbn,
+            'original_goodreads_id': book.goodreads_id,
+            'found_title': result['title'],
+            'found_author': result['author'],
+            'format': result['format'],
+            'availability': availability or result['availability'],
+            'detail_link': result['detail_link'],
+            'branch_availability': branches
+        }
+    
+    def process_single_book(self, book: Book):
+        """Process a single book - shared implementation"""
+        try:
+            print(f"Processing: {book.title} by {book.author}")
+            
+            # Search for the book
+            search_results = self.search_book(book)
+            
+            if search_results:
+                results = []
+                for result in search_results:
+                    # Get detailed branch availability if needed
+                    branch_availability = None
+                    if result['availability'] == 'Available' and result['detail_link']:
+                        branch_availability = self.get_branch_availability(result['detail_link'])
+
+                    if branch_availability:
+                        availability = branch_availability[0]
+                        branches = branch_availability[1]
+                    else:
+                        availability = result['availability']
+                        branches = None
+
+                    result_data = self.create_success_result(book, result, availability, branches)
+                    results.append(result_data)
+                
+                return results
+            else:
+                return [self.create_not_found_result(book)]
+                
+        except Exception as e:
+            print(f"Error processing book '{book.title}': {e}")
+            return [self.create_error_result(book)]
+    
+    def check_books(self, books: List[Book], preferred_branch=None):
+        """Check availability for a list of books using multithreading - shared implementation"""
+        all_results = []
+        
+        print(f"Processing {len(books)} books with {self.max_workers} workers...")
+        
+        # Use ThreadPoolExecutor for thread-safe multithreading
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            # Submit all tasks
+            future_to_book = {executor.submit(self.process_single_book, book): book for book in books}
+            
+            # Process completed tasks
+            for future in as_completed(future_to_book):
+                book = future_to_book[future]
+                try:
+                    results = future.result()
+                    all_results.extend(results)
+                except Exception as e:
+                    print(f"Error processing book {book.title}: {e}")
+                    # Add error result
+                    all_results.append(self.create_error_result(book))
+        
+        return all_results
+    
+    def cleanup(self):
+        """Clean up resources"""
+        if hasattr(self, 'driver_pool'):
+            self.driver_pool.cleanup()
+    
+    def __del__(self):
+        """Destructor to ensure cleanup"""
+        self.cleanup()
+    
+    @abstractmethod
+    def search_book(self, book: Book):
+        """Search for a book - must be implemented by subclasses"""
+        pass
+    
+    @abstractmethod
+    def parse_search_results(self, html_content, original_book: Book):
+        """Parse search results - must be implemented by subclasses"""
+        pass
+    
+    @abstractmethod
+    def build_search_query(self, title, author):
+        """Build search query - must be implemented by subclasses"""
+        pass
+    
+    def get_branch_availability(self, detail_link):
+        """Get branch availability - optional override for subclasses"""
+        return None
+
+class PBCLibraryScraper(LibraryScraperBase):
+    def __init__(self, max_workers: int = 3):
+        super().__init__(max_workers)
+        self.base_url = "https://pbclibrary.bibliocommons.com/v2/search"
+        
     def build_search_query(self, title, author):
         """Build the BiblioCommons search query string"""
         # Clean up title and author - remove extra spaces and special characters
@@ -198,15 +321,13 @@ class PBCLibraryScraper(LibraryScraperBase):
         query = f"(title:({title}) AND contributor:({author}))"
         return query
     
-    def clean_title(self, title):
-        return re.sub(r"\s*\(.*?\)", "", title)
     
     def search_book(self, book: Book):
         """Search for a book and return availability information"""
         thread_id = threading.current_thread().ident
-        self._rate_limit(thread_id)
+        super()._rate_limit(thread_id)
         
-        title = self.clean_title(book.title)
+        title = super().clean_title(book.title)
         query = self.build_search_query(title, book.author)
         
         params = {
@@ -352,144 +473,13 @@ class PBCLibraryScraper(LibraryScraperBase):
         finally:
             # Always return driver to pool
             self.driver_pool.return_driver(driver)
-    
-    def process_single_book(self, book: Book):
-        """Process a single book - thread-safe function"""
-        try:
-            print(f"Processing: {book.title} by {book.author}")
-            
-            # Search for the book
-            search_results = self.search_book(book)
-            
-            if search_results:
-                results = []
-                for result in search_results:
-                    # Get detailed branch availability if needed
-                    branch_availability = None
-                    if result['availability'] == 'Available' and result['detail_link']:
-                        branch_availability = self.get_branch_availability(result['detail_link'])
-
-                    if branch_availability:
-                        availability = branch_availability[0]
-                        branches = branch_availability[1]
-                    else:
-                        availability = result['availability']
-                        branches = None
-
-                    result_data = {
-                        'original_title': book.title,
-                        'original_author': book.author,
-                        'original_isbn': book.isbn,
-                        'original_goodreads_id': book.goodreads_id,
-                        'found_title': result['title'],
-                        'found_author': result['author'],
-                        'format': result['format'],
-                        'availability': availability,
-                        'detail_link': result['detail_link'],
-                        'branch_availability': branches
-                    }
-                    
-                    results.append(result_data)
-                
-                return results
-            else:
-                return [{
-                    'original_title': book.title,
-                    'original_author': book.author,
-                    'original_isbn': book.isbn,
-                    'original_goodreads_id': book.goodreads_id,
-                    'found_title': None,
-                    'found_author': None,
-                    'format': None,
-                    'availability': 'Not found',
-                    'detail_link': None,
-                    'branch_availability': None
-                }]
-                
-        except Exception as e:
-            print(f"Error processing book '{book.title}': {e}")
-            return [{
-                'original_title': book.title,
-                'original_author': book.author,
-                'original_isbn': book.isbn,
-                'original_goodreads_id': book.goodreads_id,
-                'found_title': None,
-                'found_author': None,
-                'format': None,
-                'availability': 'Error',
-                'detail_link': None,
-                'branch_availability': None
-            }]
-    
-    def check_books(self, books: List[Book], preferred_branch=None):
-        """Check availability for a list of books using multithreading"""
-        all_results = []
-        
-        print(f"Processing {len(books)} books with {self.max_workers} workers...")
-        
-        # Use ThreadPoolExecutor for thread-safe multithreading
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            # Submit all tasks
-            future_to_book = {executor.submit(self.process_single_book, book): book for book in books}
-            
-            # Process completed tasks
-            for future in as_completed(future_to_book):
-                book = future_to_book[future]
-                try:
-                    results = future.result()
-                    all_results.extend(results)
-                except Exception as e:
-                    print(f"Error processing book {book.title}: {e}")
-                    # Add error result
-                    all_results.append({
-                        'original_title': book.title,
-                        'original_author': book.author,
-                        'original_isbn': book.isbn,
-                        'original_goodreads_id': book.goodreads_id,
-                        'found_title': None,
-                        'found_author': None,
-                        'format': None,
-                        'availability': 'Error',
-                        'detail_link': None,
-                        'branch_availability': None
-                    })
-
-                   
-        
-        return all_results
-    
-    def __del__(self):
-        """Clean up driver pool"""
-        if hasattr(self, 'driver_pool'):
-            self.driver_pool.cleanup()
 
 # --- New AlachuaCountyLibraryScraper ---
 class AlachuaCountyLibraryScraper(LibraryScraperBase):
     def __init__(self, max_workers: int = 3):
+        super().__init__(max_workers)
         self.base_url = "https://catalog.aclib.us/search/searchresults.aspx"
-        self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'en-US,en;q=0.5',
-            'Accept-Encoding': 'gzip, deflate, br',
-            'Connection': 'keep-alive',
-            'Upgrade-Insecure-Requests': '1'
-        }
-        self.max_workers = max_workers
-        self.last_request_time = {}
-        self.request_lock = threading.Lock()
-        self.min_delay = 1.0
-        self.driver_pool = ThreadSafeSeleniumPool(max_workers)
-
-    def _rate_limit(self, thread_id):
-        with self.request_lock:
-            current_time = time.time()
-            if thread_id in self.last_request_time:
-                time_since_last = current_time - self.last_request_time[thread_id]
-                if time_since_last < self.min_delay:
-                    time.sleep(self.min_delay - time_since_last)
-            self.last_request_time[thread_id] = time.time()
-
+        
     def build_search_query(self, title, author):
         # Return a dict of advanced search parameters for title and author
         return {
@@ -514,8 +504,8 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
         from selenium.webdriver.support.ui import WebDriverWait
         from selenium.webdriver.support import expected_conditions as EC
         thread_id = threading.current_thread().ident
-        self._rate_limit(thread_id)
-        title = book.title.strip().replace('"', '')
+        super()._rate_limit(thread_id)
+        title = super().clean_title(book.title)
         author = book.author.strip().replace('"', '')
         params = self.build_search_query(title, author)
         url = f"{self.base_url}?{urlencode(params)}"
@@ -547,8 +537,10 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
         results = []
         # Polaris catalog: look for result rows
         # Rows is a list of all of the possible results
-        rows = soup.find_all('div', class_='content-module content-module--search-result')
-        for row in rows:
+        row = soup.find('div', class_='content-module content-module--search-result')
+        if row:
+
+    
             try:
                 # Find all the title parts
                 title_div = row.find('div', class_="nsm-brief-primary-title-group")
@@ -557,7 +549,7 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
                     book_title = " ".join([span.get_text(strip=True) for span in title_spans]) if title_spans else "Unknown"
                 else:
                     book_title = "Unknown"
-                print(book_title)
+               # print(book_title)
                 # Find the parent <a> tag for the detail link (adjust selector as needed)
                 link_elem = row.find('a', href=True)
                 detail_link = link_elem['href'] if link_elem else None
@@ -571,7 +563,7 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
                     book_author = " ".join([span.get_text(strip=True) for span in book_author_spans]) if book_author_spans else original_book.author
                 else:
                     book_author = original_book.author
-                print(book_author)
+             #   print(book_author)
                 # Format and availability are not always present in brief view
                 book_format = None
                 availability = "Unknown"
@@ -586,85 +578,6 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
             except Exception as e:
                 print(f"Error parsing ACLD result: {e}")
         return results
-
-    def check_books(self, books: List[Book], preferred_branch=None):
-        all_results = []
-        print(f"Processing {len(books)} books with {self.max_workers} workers (Alachua County Library)...")
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            future_to_book = {executor.submit(self.process_single_book, book): book for book in books}
-            for future in as_completed(future_to_book):
-                book = future_to_book[future]
-                try:
-                    results = future.result()
-                    all_results.extend(results)
-                except Exception as e:
-                    print(f"Error processing book {book.title}: {e}")
-                    all_results.append({
-                        'original_title': book.title,
-                        'original_author': book.author,
-                        'original_isbn': book.isbn,
-                        'original_goodreads_id': book.goodreads_id,
-                        'found_title': None,
-                        'found_author': None,
-                        'format': None,
-                        'availability': 'Error',
-                        'detail_link': None,
-                        'branch_availability': None
-                    })
-        return all_results
-
-    def process_single_book(self, book: Book):
-        try:
-            print(f"Processing: {book.title} by {book.author} (ACLD)")
-            search_results = self.search_book(book)
-            if search_results:
-                results = []
-                for result in search_results:
-                    result_data = {
-                        'original_title': book.title,
-                        'original_author': book.author,
-                        'original_isbn': book.isbn,
-                        'original_goodreads_id': book.goodreads_id,
-                        'found_title': result['title'],
-                        'found_author': result['author'],
-                        'format': result['format'],
-                        'availability': result['availability'],
-                        'detail_link': result['detail_link'],
-                        'branch_availability': result['branch_availability']
-                    }
-                    results.append(result_data)
-                return results
-            else:
-                return [{
-                    'original_title': book.title,
-                    'original_author': book.author,
-                    'original_isbn': book.isbn,
-                    'original_goodreads_id': book.goodreads_id,
-                    'found_title': None,
-                    'found_author': None,
-                    'format': None,
-                    'availability': 'Not found',
-                    'detail_link': None,
-                    'branch_availability': None
-                }]
-        except Exception as e:
-            print(f"Error processing book '{book.title}' (ACLD): {e}")
-            return [{
-                'original_title': book.title,
-                'original_author': book.author,
-                'original_isbn': book.isbn,
-                'original_goodreads_id': book.goodreads_id,
-                'found_title': None,
-                'found_author': None,
-                'format': None,
-                'availability': 'Error',
-                'detail_link': None,
-                'branch_availability': None
-            }]
-
-    def __del__(self):
-        if hasattr(self, 'driver_pool'):
-            self.driver_pool.cleanup()
 
 # Example usage
 if __name__ == "__main__":
