@@ -542,6 +542,55 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
             'sort': 'RELEVANCE',
             'page': '0'
         }
+    
+    def clean_title_text(self, title):
+        """Clean and format title text by adding proper spacing"""
+        if not title:
+            return title
+        
+        # Remove extra whitespace
+        title = ' '.join(title.split())
+        
+        # Common patterns to fix
+        replacements = [
+            # Fix common word boundaries
+            (r'([a-z])([A-Z])', r'\1 \2'),  # Add space between camelCase
+            (r'([a-z])(\d)', r'\1 \2'),     # Add space between letter and number
+            (r'(\d)([A-Za-z])', r'\1 \2'),  # Add space between number and letter
+            
+            # Fix specific common patterns
+            (r'Beforethe', 'Before the'),
+            (r'Beforewe', 'Before we'),
+            (r'Beforecoffee', 'Before coffee'),
+            (r'Beforeforget', 'Before forget'),
+            (r'Beforegoodbye', 'Before goodbye'),
+            (r'Beforekindness', 'Before kindness'),
+            (r'Beforethecoffeegetscold', 'Before the coffee gets cold'),
+            (r'Beforewesaygoodbye', 'Before we say goodbye'),
+            (r'Beforeweforgetkindness', 'Before we forget kindness'),
+            
+            # Fix other common patterns
+            (r'([a-z])([A-Z][a-z])', r'\1 \2'),  # More camelCase fixes
+            (r'([a-z])([A-Z]{2,})', r'\1 \2'),   # Fix ALL CAPS words
+            
+            # Clean up multiple spaces
+            (r'\s+', ' '),
+        ]
+        
+        for pattern, replacement in replacements:
+            title = re.sub(pattern, replacement, title)
+        
+        # Capitalize first letter of each word (title case)
+        title = title.title()
+        
+        # Fix common words that should be lowercase
+        lowercase_words = ['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'of', 'on', 'or', 'the', 'to', 'up', 'with']
+        words = title.split()
+        for i, word in enumerate(words):
+            if word.lower() in lowercase_words and i > 0:  # Don't lowercase the first word
+                words[i] = word.lower()
+        
+        return ' '.join(words)
 
     def search_book(self, book: Book):
         from urllib.parse import urlencode
@@ -634,51 +683,67 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
             self.driver_pool.return_driver(driver)
 
     def parse_search_results(self, html_content, original_book: Book):
-        # Save the HTML content to a file
-        # with open("acld_search_debug.html", "w", encoding="utf-8") as f:
-        #     f.write(html_content)
-        # print("Saved HTML content to acld_search_debug.html and opening in browser...")
-        # webbrowser.open("acld_search_debug.html")
         soup = BeautifulSoup(html_content, 'html.parser')
         results = []
         # Polaris catalog: look for result rows
         # Rows is a list of all of the possible results
         rows = soup.find_all('div', class_='content-module content-module--search-result')
         
-        for row in rows:
+        #Look at only first 3 results
+        num_to_search = rows[:3] if len(rows) >= 3 else rows
+        for row in num_to_search:
             try:    
                 # Find all the title parts - try multiple selectors
+
+                
                 book_title = "Unknown"
                 title_div = row.find('div', class_="nsm-brief-primary-title-group")
                 if title_div:
-                    title_spans = title_div.find_all('span', class_="nsm-hit-text")
-                    if title_spans:
-                        book_title = " ".join([span.get_text(strip=True) for span in title_spans])
+                    test =  title_div.find('span', class_="nsm-short-item nsm-e135")
+                    if test:
+                        # Extract text from all nsm-hit-text spans within the nsm-short-item
+                        hit_text_spans = test.find_all('span', class_="nsm-hit-text")
+                        if hit_text_spans:
+                            raw_title = " ".join([span.get_text(strip=True) for span in hit_text_spans])
+                        else:
+                            # Fallback to direct text if no hit-text spans found
+                            raw_title = test.get_text(strip=True)
+                        
+                        # Clean up the title by adding proper spacing
+                        cleaned_title = self.clean_title_text(raw_title)
+                        print(f"Test title: {raw_title} -> {cleaned_title}")
+                        book_title = cleaned_title
                     else:
-                        # Try alternative title selectors
-                        title_link = title_div.find('a')
-                        if title_link:
-                            book_title = title_link.get_text(strip=True)
+                        title_spans = title_div.find_all('span', class_="nsm-hit-text")
+                        if title_spans:
+                            raw_title = " ".join([span.get_text(strip=True) for span in title_spans])
+                            book_title = self.clean_title_text(raw_title)
+                        else:
+                            # Try alternative title selectors
+                            title_link = title_div.find('a')
+                            if title_link:
+                                raw_title = title_link.get_text(strip=True)
+                                book_title = self.clean_title_text(raw_title)
                 
-                # If still unknown, try other title selectors
+               
+                # If still unknown, try the nsm-short-item nsm-e135 selector which seems to work
                 if book_title == "Unknown":
-                    # Try different title selectors
-                    title_selectors = [
-                        'span.nsm-brief-title',
-                        'a.nsm-brief-title-link',
-                        'div.nsm-brief-title-group span',
-                        'h3.nsm-brief-title'
-                    ]
-                    for selector in title_selectors:
-                        title_elem = row.select_one(selector)
-                        if title_elem:
-                            book_title = title_elem.get_text(strip=True)
-                            break
-                
-                # If still unknown, use original title as fallback
-                if book_title == "Unknown":
-                    book_title = original_book.title
-                    print(f"Using original title for {original_book.title}: {book_title}")
+                    # Try the specific selector that seems to work
+                    test_elem = row.find('span', class_="nsm-short-item nsm-e135")
+                    if test_elem:
+                        # Extract text from all nsm-hit-text spans within the nsm-short-item
+                        hit_text_spans = test_elem.find_all('span', class_="nsm-hit-text")
+                        if hit_text_spans:
+                            raw_title = " ".join([span.get_text(strip=True) for span in hit_text_spans])
+                        else:
+                            # Fallback to direct text if no hit-text spans found
+                            raw_title = test_elem.get_text(strip=True)
+                        
+                        book_title = self.clean_title_text(raw_title)
+                        print(f"Found title using nsm-short-item: {raw_title} -> {book_title}")
+                    else:
+                        book_title = original_book.title
+                        print(f"Using original title for {original_book.title}: {book_title}")
                 # Find the parent <a> tag for the detail link (adjust selector as needed)
                 link_elem = row.find('a', class_="nsm-brief-action-link", href=True)
                 detail_link = link_elem['href'] if link_elem else None
@@ -817,43 +882,29 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
             
             branch_names = []
                  
-            # Look for branch/location information with multiple selectors
-            location_selectors = [
-                'tr.location',
-                'div.location',
-                'span.location',
-                'td.branch',
-                'div.branch',
-                'span.branch',
-                '.library-location',
-                '.branch-location',
-                'tr[class*="location"]',
-                'div[class*="location"]'
-            ]
-            
-            for selector in location_selectors:
-                location_elems = soup.select(selector)
-                if location_elems:
-                    for elem in location_elems:
-                        branch_name = elem.get_text().strip()
-                        if branch_name and len(branch_name) > 2:  # Filter out very short text
-                            # Extract availability information from branch name
-                            # Format: "Branch Name (X of Y available)"
-                            match = re.search(r'\((\d+) of \d+ available\)', branch_name)
-                            if match:
-                                available_count = int(match.group(1))
-                                # Only add branches that have available books
-                                if available_count > 0:
-                                    # Clean the branch name by removing the availability part
-                                    clean_branch_name = re.sub(r'\s*\(\d+ of \d+ available\)', '', branch_name).strip()
-                                    if clean_branch_name and clean_branch_name not in branch_names:
-                                        branch_names.append(clean_branch_name)
-                            else:
-                                # If no availability pattern found, check if it contains library keywords
-                                if any(keyword in branch_name.lower() for keyword in ['library', 'branch', 'center']):
-                                    if branch_name not in branch_names:
-                                        branch_names.append(branch_name)
-                    break  # If we found elements with this selector, stop trying others
+            location_elems = soup.select('tr.location')
+            if location_elems:
+                for elem in location_elems:
+                    branch_name = elem.get_text().strip()
+                    if branch_name and len(branch_name) > 2:  # Filter out very short text
+                        # Extract availability information from branch name
+                        # Format: "Branch Name (X of Y available)"
+                        match = re.search(r'\((\d+) of \d+ available\)', branch_name)
+                        if match:
+                    
+                            available_count = int(match.group(1))
+                            # Only add branches that have available books
+                            if available_count > 0:
+                                # Clean the branch name by removing the availability part
+                                clean_branch_name = re.sub(r'\s*\(\d+ of \d+ available\)', '', branch_name).strip()
+                                if clean_branch_name and clean_branch_name not in branch_names:
+                                    branch_names.append(clean_branch_name)
+                        else:
+                            # If no availability pattern found, check if it contains library keywords
+                            if any(keyword in branch_name.lower() for keyword in ['library', 'branch', 'center']):
+                                if branch_name not in branch_names:
+                                    branch_names.append(branch_name)
+              
             
             # If no branches found with specific selectors, try a broader search
             if not branch_names:
