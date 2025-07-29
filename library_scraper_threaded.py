@@ -159,7 +159,7 @@ class LibraryScraperBase(ABC):
         # Rate limiting
         self.last_request_time = {}
         self.request_lock = threading.Lock()
-        self.min_delay = 1.0  # Minimum delay between requests in seconds
+        self.min_delay = 1.5  # Minimum delay between requests in seconds
     
     def get_default_headers(self):
         """Return default headers for HTTP requests"""
@@ -229,25 +229,29 @@ class LibraryScraperBase(ABC):
             search_results = self.search_book(book)
             
             if search_results:
+                print(f"✅ Found {len(search_results)} result(s) for '{book.title}'")
                 results = []
                 for result in search_results:
                     # Get detailed branch availability if needed
                     branch_availability = None
                     if result['availability'] == 'Available' and result['detail_link']:
                         branch_availability = self.get_branch_availability(result['detail_link'])
+                        print(f"Branch availability: {branch_availability}")
 
                     if branch_availability:
-                        availability = branch_availability[0]
+                      #  availability = branch_availability[0]
                         branches = branch_availability[1]
                     else:
-                        availability = result['availability']
+                        
                         branches = None
 
+                    availability = result['availability']
                     result_data = self.create_success_result(book, result, availability, branches)
                     results.append(result_data)
                 
                 return results
             else:
+                print(f"❌ No results found for '{book.title}' by {book.author}")
                 return [self.create_not_found_result(book)]
                 
         except Exception as e:
@@ -311,6 +315,13 @@ class PBCLibraryScraper(LibraryScraperBase):
         super().__init__(max_workers)
         self.base_url = "https://pbclibrary.bibliocommons.com/v2/search"
         
+        # Initialize session with better settings for reliability
+        self.session.mount('https://', requests.adapters.HTTPAdapter(
+            max_retries=3,
+            pool_connections=10,
+            pool_maxsize=10
+        ))
+        
     def build_search_query(self, title, author):
         """Build the BiblioCommons search query string"""
         # Clean up title and author - remove extra spaces and special characters
@@ -337,15 +348,21 @@ class PBCLibraryScraper(LibraryScraperBase):
             'suppress': 'true'
         }
         
-        try:
-            response = self.session.get(self.base_url, params=params, timeout=10)
-            response.raise_for_status()
-            
-            return self.parse_search_results(response.text, book)
-            
-        except requests.RequestException as e:
-            print(f"Error searching for '{book.title}' by {book.author}: {e}")
-            return None
+        # Add retry logic for better reliability
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                response = self.session.get(self.base_url, params=params, timeout=15)
+                response.raise_for_status()
+                
+                return self.parse_search_results(response.text, book)
+                
+            except requests.RequestException as e:
+                print(f"Error searching for '{book.title}' by {book.author} (attempt {attempt + 1}/{max_retries}): {e}")
+                if attempt < max_retries - 1:
+                    time.sleep(2)  # Wait before retry
+                else:
+                    return None
     
     def parse_search_results(self, html_content, original_book: Book):
         """Parse the search results HTML to extract availability info"""
@@ -405,17 +422,33 @@ class PBCLibraryScraper(LibraryScraperBase):
         return results
     
     def extract_branch_names(self, tbody_text):
-        # Pattern to match branch names (words ending with "BRANCH" or specific library names)
-        pattern = r'^([A-Z][A-Z\s\-\.]+(?:BRANCH|LIBRARY))(?:\s*-\s*[A-Za-z\s]+)?$'
-        
+        # flexible approach to extract branch names
+      
         lines = tbody_text.strip().split('\n')
         branch_names = []
         
         for line in lines:
             line = line.strip()
-            match = re.match(pattern, line)
-            if match:
-                branch_names.append(match.group(1).strip())
+            if not line:
+                continue
+                
+            # Look for common branch patterns
+            # Pattern 1: Standard branch/library names (ends with BRANCH or LIBRARY)
+            branch_match = re.match(r'^([A-Z][A-Z\s\-\.]+(?:BRANCH|LIBRARY))(?:\s*-\s*[A-Za-z\s]+)?$', line)
+            if branch_match:
+                branch_names.append(branch_match.group(1).strip())
+                continue
+            
+            # Pattern 2: Special services like BOOKS BY MAIL, BOOKMOBILE
+            service_match = re.match(r'^([A-Z][A-Z\s\-\.]+(?:BOOKS BY MAIL|BOOKMOBILE|MAIL|MOBILE))(?:\s*-\s*[A-Za-z\s]+)?$', line)
+            if service_match:
+                branch_names.append(service_match.group(1).strip())
+                continue
+            
+            # Pattern 3: Any line that starts with capital letters and contains library-related keywords
+            if re.match(r'^[A-Z][A-Z\s\-\.]+$', line) and any(keyword in line.upper() for keyword in ['BRANCH', 'LIBRARY', 'BOOKS', 'MAIL', 'MOBILE']):
+                branch_names.append(line)
+                continue
         
         return list(set(branch_names))  # Remove duplicates
     
@@ -539,7 +572,7 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
         # Rows is a list of all of the possible results
         row = soup.find('div', class_='content-module content-module--search-result')
         if row:
-            try:
+            try:    
                 # Find all the title parts
                 title_div = row.find('div', class_="nsm-brief-primary-title-group")
                 if title_div:
@@ -547,7 +580,6 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
                     book_title = " ".join([span.get_text(strip=True) for span in title_spans]) if title_spans else "Unknown"
                 else:
                     book_title = "Unknown"
-               # print(book_title)
                 # Find the parent <a> tag for the detail link (adjust selector as needed)
                 link_elem = row.find('a', class_="nsm-brief-action-link", href=True)
                 detail_link = link_elem['href'] if link_elem else None
@@ -562,21 +594,115 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
                     book_author = " ".join([span.get_text(strip=True) for span in book_author_spans]) if book_author_spans else original_book.author
                 else:
                     book_author = original_book.author
-             #   print(book_author)
+            
                 # Format and availability are not always present in brief view
-                book_format = None
+                
+             # Extract availability information
                 availability = "Unknown"
+                
+                availability_text = row.find_all('div', class_="nsm-brief-standard-group")
+             #   print(f"len: {len(availability_text)}")
+                for i in availability_text:
+                    num_available = i.find('span', class_='nsm-brief-label').get_text().strip()
+                   
+                    if num_available:
+                        #print(test)
+                        if "Availability" in num_available:
+                            availability_elem = i.find('span', class_='nsm-short-item')
+                            if availability_elem:
+                                amount_available = availability_elem.get_text().strip()[0]
+                           #     print(f"Number of books available: {availability_elem.get_text().strip()[0]}")
+                                availability = "Unavailable" if amount_available == "0" else  "Available"
+                                
+                            break
+                     
+                
+                book_format = "Unknown"
+
+                # branches = row.find_all('tr', class_="location")
+                # print(f"len: {len(branches)}")
+                # for i in branches:
+                #     print(i.get_text().strip())
+
+               
                 results.append({
                     'title': book_title,
                     'author': book_author,
                     'format': book_format,
                     'availability': availability,
                     'detail_link': detail_link,
-                    'branch_availability': None
+                    'branch_availability': []
                 })
             except Exception as e:
                 print(f"Error parsing ACLD result: {e}")
         return results
+
+    def get_branch_availability(self, detail_link):
+        """Get branch availability for Alachua County Library using the detail link"""
+        driver = self.driver_pool.get_driver()
+        if not driver:
+            return None
+            
+        try:
+            driver.get(detail_link)
+            
+            wait = WebDriverWait(driver, 10)
+            
+            # Wait for the page content to load
+            wait.until(
+                EC.presence_of_element_located((By.TAG_NAME, "body"))
+            )
+            
+            # Get the HTML content
+            html_content = driver.page_source
+            soup = BeautifulSoup(html_content, 'html.parser')
+            
+          
+            branch_names = []
+                 
+            # Look for branch/location information
+            # This is a placeholder - you'll need to adjust based on actual page structure
+            location_elems = soup.find_all('tr', class_='location')
+            for elem in location_elems:
+                branch_name = elem.get_text().strip()
+                if branch_name:
+            
+                    # Extract availability information from branch name
+                    # Format: "Branch Name (X of Y available)"
+                    match = re.search(r'\((\d+) of \d+ available\)', branch_name)
+                    if match:
+                        available_count = int(match.group(1))
+                        # Only add branches that have available books
+                       
+                        if available_count > 0:
+                            # Clean the branch name by removing the availability part
+                            clean_branch_name = re.sub(r'\s*\(\d+ of \d+ available\)', '', branch_name).strip()
+                            branch_names.append(clean_branch_name)              
+                    else:
+                        # If no availability pattern found, add the branch as is
+                        branch_names.append(branch_name)
+            
+            results = []
+            branch_info = []
+            for branch in branch_names:
+                branch_info.append({'branch': branch})
+
+            if branch_info != []:
+                 results.append("Available")  # first index is availability
+            else:
+                results.append("Unavailable")
+            results.append(branch_info)  # second index is available branches
+            return results
+            
+        except Exception as e:
+            print(f"Availability check failed for {detail_link}: {e}")
+            return None
+        finally:
+            # Always return driver to pool
+            self.driver_pool.return_driver(driver)
+       
+
+    
 
 # Example usage
 if __name__ == "__main__":
