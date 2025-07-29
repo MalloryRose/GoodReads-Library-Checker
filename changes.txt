@@ -1,7 +1,13 @@
 Updates to be made:
 
-1. Glitch: Atmosphere shows as available but doesn't show the branches
-2. Add availibility for Alachua
-3. Save the data as you scrape
-4. Record requests which returned errors somewhere to retry them. Automate this.
-5. Obtaining format (E-book, audiobook, etc)
+- GUI is very slow
+- Save the data as you scrape
+- Record requests which returned errors somewhere to retry them. Automate this.
+- Obtaining format (E-book, audiobook, etc)
+- Memory Management:
+        For large book lists, consider:
+
+        Implementing batch processing
+        Adding memory usage monitoring
+        Clearing cached data periodically
+ 

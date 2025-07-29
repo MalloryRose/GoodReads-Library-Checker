@@ -1023,7 +1023,7 @@ if __name__ == "__main__":
         file = "PBSC" if choice == "1" else "Alachua"
       
 
-        with open(f'data/library_availability_{file}.json', 'w') as f:
+        with open(f'data/{file}_availability.json', 'w') as f:
             json.dump(results, f, indent=2)
         
         print(f"\n✅ Results saved to library_availability.json")
