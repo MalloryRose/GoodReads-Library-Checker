@@ -118,6 +118,11 @@ class ThreadSafeSeleniumPool:
             chrome_options.add_argument('--disable-features=TranslateUI')
             chrome_options.add_argument('--no-first-run')
             chrome_options.add_argument('--no-default-browser-check')
+            chrome_options.add_argument('--disable-logging')
+            chrome_options.add_argument('--disable-dev-shm-usage')
+            chrome_options.add_argument('--log-level=3')
+            chrome_options.add_argument('--silent')
+            chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
             
             return webdriver.Chrome(options=chrome_options)
         except Exception as e:
@@ -229,14 +234,21 @@ class LibraryScraperBase(ABC):
             search_results = self.search_book(book)
             
             if search_results:
-                print(f"✅ Found {len(search_results)} result(s) for '{book.title}'")
+               # print(f"✅ Found {len(search_results)} result(s) for '{book.title}'")
                 results = []
                 for result in search_results:
+                    # Handle loading availability - retry if needed
+                    if result['availability'] == 'Loading':
+                        print(f"Availability still loading for {book.title}, retrying...")
+                        # Retry the search with additional wait time
+                        retry_results = self.search_book_with_retry(book)
+                        if retry_results:
+                            result = retry_results[0]  # Use the retry result
+                    
                     # Get detailed branch availability if needed
                     branch_availability = None
                     if result['availability'] == 'Available' and result['detail_link']:
                         branch_availability = self.get_branch_availability(result['detail_link'])
-                        print(f"Branch availability: {branch_availability}")
 
                     if branch_availability:
                       #  availability = branch_availability[0]
@@ -553,8 +565,69 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
                 WebDriverWait(driver, 10).until(
                     EC.presence_of_element_located((By.CSS_SELECTOR, ".content-module--search-result"))
                 )
+                
+                # Wait for AJAX availability data to load
+                # Look for loading images and wait for them to disappear
+                wait = WebDriverWait(driver, 15)
+                try:
+                    # Wait for any loading images to disappear
+                    wait.until_not(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, "img[src*='ajax-loader']"))
+                    )
+                except:
+                    # If no loading images found or timeout, continue anyway
+                    pass
+                
+                # Additional wait to ensure availability data is loaded
+                time.sleep(2)
+                
             except Exception as e:
                 print(f"Timeout or error waiting for ACLD search results: {e}")
+            html_content = driver.page_source
+            return self.parse_search_results(html_content, book)
+        finally:
+            self.driver_pool.return_driver(driver)
+    
+    def search_book_with_retry(self, book: Book):
+        """Retry search with additional wait time for AJAX content"""
+        from urllib.parse import urlencode
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
+        from selenium.webdriver.support import expected_conditions as EC
+        thread_id = threading.current_thread().ident
+        super()._rate_limit(thread_id)
+        title = super().clean_title(book.title)
+        author = book.author.strip().replace('"', '')
+        params = self.build_search_query(title, author)
+        url = f"{self.base_url}?{urlencode(params)}"
+        driver = self.driver_pool.get_driver()
+        if not driver:
+            print("Could not get Selenium driver for ACLD retry search.")
+            return None
+        try:
+            driver.get(url)
+            # Wait for results to load with extended timeout
+            try:
+                WebDriverWait(driver, 15).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, ".content-module--search-result"))
+                )
+                
+                # Extended wait for AJAX availability data to load
+                wait = WebDriverWait(driver, 20)
+                try:
+                    # Wait for any loading images to disappear with longer timeout
+                    wait.until_not(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, "img[src*='ajax-loader']"))
+                    )
+                except:
+                    # If still loading after extended wait, continue anyway
+                    pass
+                
+                # Additional wait to ensure availability data is loaded
+                time.sleep(5)
+                
+            except Exception as e:
+                print(f"Timeout or error waiting for ACLD retry search results: {e}")
             html_content = driver.page_source
             return self.parse_search_results(html_content, book)
         finally:
@@ -570,16 +643,42 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
         results = []
         # Polaris catalog: look for result rows
         # Rows is a list of all of the possible results
-        row = soup.find('div', class_='content-module content-module--search-result')
-        if row:
+        rows = soup.find_all('div', class_='content-module content-module--search-result')
+        
+        for row in rows:
             try:    
-                # Find all the title parts
+                # Find all the title parts - try multiple selectors
+                book_title = "Unknown"
                 title_div = row.find('div', class_="nsm-brief-primary-title-group")
                 if title_div:
                     title_spans = title_div.find_all('span', class_="nsm-hit-text")
-                    book_title = " ".join([span.get_text(strip=True) for span in title_spans]) if title_spans else "Unknown"
-                else:
-                    book_title = "Unknown"
+                    if title_spans:
+                        book_title = " ".join([span.get_text(strip=True) for span in title_spans])
+                    else:
+                        # Try alternative title selectors
+                        title_link = title_div.find('a')
+                        if title_link:
+                            book_title = title_link.get_text(strip=True)
+                
+                # If still unknown, try other title selectors
+                if book_title == "Unknown":
+                    # Try different title selectors
+                    title_selectors = [
+                        'span.nsm-brief-title',
+                        'a.nsm-brief-title-link',
+                        'div.nsm-brief-title-group span',
+                        'h3.nsm-brief-title'
+                    ]
+                    for selector in title_selectors:
+                        title_elem = row.select_one(selector)
+                        if title_elem:
+                            book_title = title_elem.get_text(strip=True)
+                            break
+                
+                # If still unknown, use original title as fallback
+                if book_title == "Unknown":
+                    book_title = original_book.title
+                    print(f"Using original title for {original_book.title}: {book_title}")
                 # Find the parent <a> tag for the detail link (adjust selector as needed)
                 link_elem = row.find('a', class_="nsm-brief-action-link", href=True)
                 detail_link = link_elem['href'] if link_elem else None
@@ -602,17 +701,52 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
                 
                 availability_text = row.find_all('div', class_="nsm-brief-standard-group")
              #   print(f"len: {len(availability_text)}")
+             
+
                 for i in availability_text:
-                    num_available = i.find('span', class_='nsm-brief-label').get_text().strip()
+                    label_elem = i.find('span', class_='nsm-brief-label')
+                    if not label_elem:
+                        continue
+                        
+                    num_available = label_elem.get_text().strip()
                    
                     if num_available:
+           
                         #print(test)
-                        if "Availability" in num_available:
+                        if "Availability" in num_available or "Available" in num_available:
                             availability_elem = i.find('span', class_='nsm-short-item')
+                            
+                            if not availability_elem:
+                                # Check if there's still a loading image
+                                loading_img = i.find('img', src=lambda x: x and 'ajax-loader' in x)
+                                if loading_img:
+                                    print(f"Availability still loading for {book_title}: {i}")
+                                    availability = "Loading"  # Mark as loading instead of Unknown
+                                else:
+                                    print(f"Availability element not found for {book_title}: {i}")
+                                break
+
+                            # print(f"num available test: {num_available}")
+                            # print(f"available test: {availability_elem}")
                             if availability_elem:
-                                amount_available = availability_elem.get_text().strip()[0]
-                           #     print(f"Number of books available: {availability_elem.get_text().strip()[0]}")
-                                availability = "Unavailable" if amount_available == "0" else  "Available"
+                                availability_text = availability_elem.get_text().strip()
+                                # Handle different availability formats
+                                if availability_text.isdigit():
+                                    amount_available = availability_text[0]
+                                    availability = "Unavailable" if amount_available == "0" else "Available"
+                                elif "available" in availability_text.lower():
+                                    availability = "Available"
+                                elif "unavailable" in availability_text.lower() or "checked out" in availability_text.lower():
+                                    availability = "Unavailable"
+                                else:
+                                    # Try to extract number from text like "2 of 5 available"
+                                  
+                                    match = re.search(r'(\d+)', availability_text)
+                                    if match:
+                                        amount = int(match.group(1))
+                                        availability = "Available" if amount > 0 else "Unavailable"
+                                    else:
+                                        availability = "Unknown"
                                 
                             break
                      
@@ -635,6 +769,18 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
                 })
             except Exception as e:
                 print(f"Error parsing ACLD result: {e}")
+        
+        # If no results found, return a not found result
+        if not results:
+            results.append({
+                'title': original_book.title,
+                'author': original_book.author,
+                'format': 'Unknown',
+                'availability': 'Not found',
+                'detail_link': None,
+                'branch_availability': None
+            })
+        
         return results
 
     def get_branch_availability(self, detail_link):
@@ -653,44 +799,93 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
                 EC.presence_of_element_located((By.TAG_NAME, "body"))
             )
             
+            # Wait for availability information to load
+            try:
+                wait.until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, ".location, .branch, .library-location"))
+                )
+            except:
+                # If no specific location elements found, continue anyway
+                pass
+            
+            # Additional wait for AJAX content
+            time.sleep(2)
+            
             # Get the HTML content
             html_content = driver.page_source
             soup = BeautifulSoup(html_content, 'html.parser')
             
-          
             branch_names = []
                  
-            # Look for branch/location information
-            # This is a placeholder - you'll need to adjust based on actual page structure
-            location_elems = soup.find_all('tr', class_='location')
-            for elem in location_elems:
-                branch_name = elem.get_text().strip()
-                if branch_name:
+            # Look for branch/location information with multiple selectors
+            location_selectors = [
+                'tr.location',
+                'div.location',
+                'span.location',
+                'td.branch',
+                'div.branch',
+                'span.branch',
+                '.library-location',
+                '.branch-location',
+                'tr[class*="location"]',
+                'div[class*="location"]'
+            ]
             
-                    # Extract availability information from branch name
-                    # Format: "Branch Name (X of Y available)"
-                    match = re.search(r'\((\d+) of \d+ available\)', branch_name)
-                    if match:
-                        available_count = int(match.group(1))
-                        # Only add branches that have available books
-                       
-                        if available_count > 0:
-                            # Clean the branch name by removing the availability part
-                            clean_branch_name = re.sub(r'\s*\(\d+ of \d+ available\)', '', branch_name).strip()
-                            branch_names.append(clean_branch_name)              
-                    else:
-                        # If no availability pattern found, add the branch as is
-                        branch_names.append(branch_name)
+            for selector in location_selectors:
+                location_elems = soup.select(selector)
+                if location_elems:
+                    for elem in location_elems:
+                        branch_name = elem.get_text().strip()
+                        if branch_name and len(branch_name) > 2:  # Filter out very short text
+                            # Extract availability information from branch name
+                            # Format: "Branch Name (X of Y available)"
+                            match = re.search(r'\((\d+) of \d+ available\)', branch_name)
+                            if match:
+                                available_count = int(match.group(1))
+                                # Only add branches that have available books
+                                if available_count > 0:
+                                    # Clean the branch name by removing the availability part
+                                    clean_branch_name = re.sub(r'\s*\(\d+ of \d+ available\)', '', branch_name).strip()
+                                    if clean_branch_name and clean_branch_name not in branch_names:
+                                        branch_names.append(clean_branch_name)
+                            else:
+                                # If no availability pattern found, check if it contains library keywords
+                                if any(keyword in branch_name.lower() for keyword in ['library', 'branch', 'center']):
+                                    if branch_name not in branch_names:
+                                        branch_names.append(branch_name)
+                    break  # If we found elements with this selector, stop trying others
+            
+            # If no branches found with specific selectors, try a broader search
+            if not branch_names:
+                # Look for any text that might be a branch name
+                all_text = soup.get_text()
+                # Common Alachua County library branch names
+                alachua_branches = [
+                    'Headquarters Library',
+                    'Millhopper Branch Library',
+                    'Tower Road Branch Library',
+                    'High Springs Branch Library',
+                    'Newberry Branch Library',
+                    'Hawthorne Branch Library',
+                    'Cone Park Branch Library',
+                    'Alachua Branch Library'
+                ]
+                
+                for branch in alachua_branches:
+                    if branch.lower() in all_text.lower():
+                        branch_names.append(branch)
             
             results = []
             branch_info = []
             for branch in branch_names:
                 branch_info.append({'branch': branch})
 
-            if branch_info != []:
-                 results.append("Available")  # first index is availability
+            if branch_info:
+                results.append("Available")  # first index is availability
+                print(f"Found {len(branch_info)} branches for availability check")
             else:
                 results.append("Unavailable")
+                print("No branches found for availability check")
             results.append(branch_info)  # second index is available branches
             return results
             
