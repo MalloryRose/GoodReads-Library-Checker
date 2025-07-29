@@ -539,8 +539,6 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
         # Rows is a list of all of the possible results
         row = soup.find('div', class_='content-module content-module--search-result')
         if row:
-
-    
             try:
                 # Find all the title parts
                 title_div = row.find('div', class_="nsm-brief-primary-title-group")
@@ -551,9 +549,10 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
                     book_title = "Unknown"
                # print(book_title)
                 # Find the parent <a> tag for the detail link (adjust selector as needed)
-                link_elem = row.find('a', href=True)
+                link_elem = row.find('a', class_="nsm-brief-action-link", href=True)
                 detail_link = link_elem['href'] if link_elem else None
                 if detail_link and not detail_link.startswith('http'):
+                    print(detail_link)
                     detail_link = f"https://catalog.aclib.us{detail_link}"
                     
                 # Author is not always present in the same div, so fallback to original
@@ -582,11 +581,19 @@ class AlachuaCountyLibraryScraper(LibraryScraperBase):
 # Example usage
 if __name__ == "__main__":
     start_time = time.time()
+
+      
+    print("Default file or enter a CSV?")
+    print("1. Default")
+    print("2. Enter own CSV")
+    choice = input("Enter 1 or 2: ").strip()
+    csv_file = "data/goodreads_library_export.csv" if choice == "1" else input("Enter a CSV file: ").strip()
+
+
     
     # Load books from Goodreads CSV export
     print("Loading books from Goodreads CSV export...")
     goodreads_extractor = GoodreadsExtractor()
-    csv_file = "data/goodreads_library_export.csv"
     books = goodreads_extractor.load_from_csv(csv_file)
     
     if not books:
@@ -612,7 +619,9 @@ if __name__ == "__main__":
         scraper = AlachuaCountyLibraryScraper(int(max_workers))
     else:
         scraper = PBCLibraryScraper(int(max_workers))
-    
+  
+
+
     try:
         # Check availability
         results = scraper.check_books(books, preferred_branch="West Palm Beach")
@@ -638,7 +647,11 @@ if __name__ == "__main__":
                 print("❌ Not found in library system")
         
         # Save results to JSON file
-        with open('data/library_availability.json', 'w') as f:
+         
+        file = "PBSC" if choice == "1" else "Alachua"
+      
+
+        with open(f'data/library_availability_{file}.json', 'w') as f:
             json.dump(results, f, indent=2)
         
         print(f"\n✅ Results saved to library_availability.json")
