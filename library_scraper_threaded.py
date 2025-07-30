@@ -1026,7 +1026,7 @@ if __name__ == "__main__":
         with open(f'data/{file}_availability.json', 'w') as f:
             json.dump(results, f, indent=2)
         
-        print(f"\n✅ Results saved to library_availability.json")
+        print(f"\n✅ Results saved to data/{file}_availability.json")
         print(f"📚 Checked {len(books)} books, found {len([r for r in results if r['found_title']])} matches")
         
     except KeyboardInterrupt:
