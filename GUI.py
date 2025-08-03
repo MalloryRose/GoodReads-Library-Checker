@@ -27,7 +27,8 @@ class LibraryScraperGUI:
         self.results = []
         self.library_system = tk.StringVar(value="PBCLibrary")
         
-        # Queue for thread communication
+        # Thread management
+        self.worker_thread = None
         self.queue = queue.Queue()
         
         # Create GUI elements
@@ -157,7 +158,7 @@ class LibraryScraperGUI:
         results_frame = ttk.LabelFrame(parent, text="📋 Results", padding="10")
         results_frame.grid(row=row, column=0, columnspan=3, sticky=(tk.W, tk.E, tk.N, tk.S), pady=(0, 10))
         results_frame.columnconfigure(0, weight=1)
-        results_frame.rowconfigure(1, weight=1)
+        results_frame.rowconfigure(2, weight=1)  # Changed from row 1 to row 2
         parent.rowconfigure(row, weight=1)
         
         # Results summary
@@ -165,9 +166,29 @@ class LibraryScraperGUI:
         self.summary_label = ttk.Label(results_frame, textvariable=self.summary_var, style='Header.TLabel')
         self.summary_label.grid(row=0, column=0, sticky=tk.W, pady=(0, 5))
         
+        # Branch filter section
+        filter_frame = ttk.Frame(results_frame)
+        filter_frame.grid(row=1, column=0, sticky=(tk.W, tk.E), pady=(0, 5))
+        filter_frame.columnconfigure(1, weight=1)
+        
+        ttk.Label(filter_frame, text="Filter by branch:").grid(row=0, column=0, sticky=tk.W, padx=(0, 10))
+        
+        self.branch_filter_var = tk.StringVar(value="All Branches")
+        self.branch_filter_combo = ttk.Combobox(filter_frame, textvariable=self.branch_filter_var, state="readonly", width=30)
+        self.branch_filter_combo.grid(row=0, column=1, sticky=(tk.W, tk.E), padx=(0, 10))
+        self.branch_filter_combo.bind('<<ComboboxSelected>>', self.on_branch_filter_change)
+        
+        # Clear filter button
+        self.clear_filter_button = ttk.Button(filter_frame, text="Clear Filter", command=self.clear_branch_filter)
+        self.clear_filter_button.grid(row=0, column=2, sticky=tk.W)
+        
+        # Initially disable filter controls
+        self.branch_filter_combo.config(state=tk.DISABLED)
+        self.clear_filter_button.config(state=tk.DISABLED)
+        
         # Results text area with scrollbar
         self.results_text = scrolledtext.ScrolledText(results_frame, wrap=tk.WORD, height=15, width=80)
-        self.results_text.grid(row=1, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+        self.results_text.grid(row=2, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))  # Changed from row 1 to row 2
         
         # Configure text tags for colored output
         self.results_text.tag_configure("available", foreground="green")
@@ -208,6 +229,17 @@ class LibraryScraperGUI:
         """Start the book checking process"""
         if not self.validate_inputs():
             return
+        
+        # Ensure any previous thread is finished
+        if self.worker_thread and self.worker_thread.is_alive():
+            self.worker_thread.join(timeout=1.0)
+        
+        # Clear the queue to prevent old messages from being processed
+        while not self.queue.empty():
+            try:
+                self.queue.get_nowait()
+            except queue.Empty:
+                break
             
         self.is_running = True
         self.start_button.config(state=tk.DISABLED)
@@ -219,27 +251,222 @@ class LibraryScraperGUI:
         self.results_text.delete(1.0, tk.END)
         
         # Start processing thread
-        thread = threading.Thread(target=self.check_books_thread, daemon=True)
-        thread.start()
+        self.worker_thread = threading.Thread(target=self.check_books_thread, daemon=True)
+        self.worker_thread.start()
         
     def stop_checking(self):
         """Stop the book checking process"""
         self.is_running = False
-        self.queue.put(("status", "Stopping... please wait"))
+        
+        # Clear the queue to prevent old messages from being processed
+        while not self.queue.empty():
+            try:
+                self.queue.get_nowait()
+            except queue.Empty:
+                break
+        
+        # Wait for worker thread to finish (with timeout)
+        if self.worker_thread and self.worker_thread.is_alive():
+            self.worker_thread.join(timeout=2.0)
+        
+        # Immediately update UI to show stopped state
+        self.start_button.config(state=tk.NORMAL)
+        self.stop_button.config(state=tk.DISABLED)
+        if self.results:
+            self.save_button.config(state=tk.NORMAL)
+        self.progress_var.set("Stopped by user")
+        self.status_var.set("Stopped ⏹️")
         
     def clear_results(self):
         """Clear all results"""
+        # Stop any running process
+        self.is_running = False
+        
+        # Clear the queue to prevent old messages from being processed
+        while not self.queue.empty():
+            try:
+                self.queue.get_nowait()
+            except queue.Empty:
+                break
+        
+        # Wait for worker thread to finish (with timeout)
+        if self.worker_thread and self.worker_thread.is_alive():
+            self.worker_thread.join(timeout=2.0)
+        
+        # Clear results
         self.results = []
         self.results_text.delete(1.0, tk.END)
         self.summary_var.set("No results yet")
         self.progress_var.set("Ready to check books...")
         self.progress_bar['value'] = 0
+        
+        # Reset button states
+        self.start_button.config(state=tk.NORMAL)
+        self.stop_button.config(state=tk.DISABLED)
         self.save_button.config(state=tk.DISABLED)
+        
+        # Reset branch filter
+        self.branch_filter_var.set("All Branches")
+        self.branch_filter_combo.config(state=tk.DISABLED)
+        self.clear_filter_button.config(state=tk.DISABLED)
+        self.branch_filter_combo['values'] = []
+        
+        # Reset status
+        self.status_var.set("Ready")
+        
+    def populate_branch_filter(self):
+        """Populate branch filter dropdown with available branches"""
+        if not self.results:
+            return
+            
+        # Collect all unique branches from results
+        branches = set()
+        for result in self.results:
+            if result.get('branch_availability'):
+                for branch in result['branch_availability']:
+                    branches.add(branch['branch'])
+        
+        # Sort branches alphabetically
+        branch_list = sorted(list(branches))
+        
+        # Update dropdown values
+        self.branch_filter_combo['values'] = ["All Branches"] + branch_list
+        
+        # Enable filter controls if branches are available
+        if branch_list:
+            self.branch_filter_combo.config(state="readonly")
+            self.clear_filter_button.config(state=tk.NORMAL)
+        else:
+            self.branch_filter_combo.config(state=tk.DISABLED)
+            self.clear_filter_button.config(state=tk.DISABLED)
+            
+    def on_branch_filter_change(self, event=None):
+        """Handle branch filter selection change"""
+        self.refresh_display()
+        
+    def clear_branch_filter(self):
+        """Clear the branch filter"""
+        self.branch_filter_var.set("All Branches")
+        self.refresh_display()
+        
+    def get_filtered_results(self):
+        """Get results filtered by selected branch"""
+        selected_branch = self.branch_filter_var.get()
+        
+        if selected_branch == "All Branches":
+            return self.results
+            
+        # Filter results to show only books available at selected branch
+        filtered_results = []
+        for result in self.results:
+            if result.get('branch_availability'):
+                for branch in result['branch_availability']:
+                    if branch['branch'] == selected_branch:
+                        filtered_results.append(result)
+                        break
+                        
+        return filtered_results
+        
+    def refresh_display(self):
+        """Refresh the results display with current filter"""
+        if not self.results:
+            return
+            
+        # Clear current display
+        self.results_text.delete(1.0, tk.END)
+        
+        # Get filtered results
+        filtered_results = self.get_filtered_results()
+        
+        # Display filtered results
+        for result in filtered_results:
+            self.display_single_result(result)
+            
+        # Update summary with filtered results
+        self.update_summary_with_filter(filtered_results)
+        
+    def display_single_result(self, result):
+        """Display a single book result (without updating summary)"""
+        text = self.results_text
+        
+        # Book header
+        header = f"\n--- {result['original_title']} by {result['original_author']} ---\n"
+        text.insert(tk.END, header, "header")
+        
+        if result['found_title']:
+            # Found book
+            text.insert(tk.END, f"Found: {result['found_title']} by {result['found_author']}\n")
+            text.insert(tk.END, f"Format: {result['format']}\n")
+            
+            # Availability with color coding
+            availability = result['availability']
+            if availability == "Available":
+                text.insert(tk.END, f"Status: {availability}\n", "available")
+            elif availability == "Unavailable":
+                text.insert(tk.END, f"Status: {availability}\n", "unavailable")
+            else:
+                text.insert(tk.END, f"Status: {availability}\n", "not_found")
+                
+            # Branch availability
+            if result['branch_availability']:
+                text.insert(tk.END, "Available at:\n")
+                for branch in result['branch_availability']:
+                    text.insert(tk.END, f"  • {branch['branch']}\n")
+                    
+            # Clickable Link
+            if result['detail_link']:
+                link_text = f"Link: {result['detail_link']}\n"
+                start_index = text.index(tk.END)
+                text.insert(tk.END, link_text, "link")
+                end_index = text.index(tk.END)
+                
+                # Bind click event to the link
+                text.tag_bind("link", "<Button-1>", lambda e, url=result['detail_link']: self.open_link(url))
+                text.tag_bind("link", "<Enter>", lambda e: text.config(cursor="hand2"))
+                text.tag_bind("link", "<Leave>", lambda e: text.config(cursor=""))
+                
+        else:
+            text.insert(tk.END, "❌ Not found in library system\n", "not_found")
+            
+        # Scroll to bottom
+        text.see(tk.END)
+        
+    def open_link(self, url):
+        """Open a URL in the default browser"""
+        try:
+            webbrowser.open(url)
+            self.status_var.set(f"Opened: {url}")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to open link: {str(e)}")
+            self.status_var.set("Failed to open link")
+        
+    def update_summary_with_filter(self, filtered_results):
+        """Update results summary with filtered results"""
+        if not filtered_results:
+            self.summary_var.set("No results match the selected filter")
+            return
+            
+        total = len(self.results)
+        filtered_total = len(filtered_results)
+        available = len([r for r in filtered_results if r['availability'] == 'Available'])
+        unavailable = len([r for r in filtered_results if r['availability'] == 'Unavailable'])
+        not_found = len([r for r in filtered_results if r['availability'] == 'Not found'])
+        
+        selected_branch = self.branch_filter_var.get()
+        if selected_branch == "All Branches":
+            summary = f"📊 Summary: {total} books checked • {available} available • {unavailable} unavailable • {not_found} not found"
+        else:
+            summary = f"📊 Summary: {filtered_total} books at {selected_branch} • {available} available • {unavailable} unavailable • {not_found} not found"
+            
+        self.summary_var.set(summary)
         
     def check_books_thread(self):
         """Main processing thread"""
+        scraper = None
         try:
             # Load books from CSV
+            if not self.is_running:
+                return
             self.queue.put(("progress", "Loading books from CSV...", 0))
             
             extractor = GoodreadsExtractor()
@@ -251,6 +478,10 @@ class LibraryScraperGUI:
             
             self.queue.put(("progress", f"Found {len(books)} books to check", 0))
             
+            # Check if stopped during CSV loading
+            if not self.is_running:
+                self.queue.put(("stopped", "Stopped during initialization"))
+                return
 
             # Initialize scraper based on selected library system
             if self.library_system.get() == "AlachuaCountyLibrary":
@@ -264,6 +495,7 @@ class LibraryScraperGUI:
             processed = 0
             
             for i, book in enumerate(books):
+                # Check stop flag before processing each book
                 if not self.is_running:
                     break
                     
@@ -271,15 +503,30 @@ class LibraryScraperGUI:
                               int((i / total_books) * 100)))
                 
                 # Process single book
-                result = scraper.process_single_book(book)
-                if result:
-                    self.results.extend(result)
-                    self.queue.put(("result", result[0]))
-                
-                processed += 1
+                try:
+                    result = scraper.process_single_book(book)
+                    
+                    # Check stop flag after processing each book
+                    if not self.is_running:
+                        break
+                        
+                    if result:
+                        self.results.extend(result)
+                        self.queue.put(("result", result[0]))
+                    
+                    processed += 1
+                except Exception as e:
+                    # Log error but continue with next book
+                    print(f"Error processing {book.title}: {str(e)}")
+                    processed += 1
+                    continue
                 
             # Cleanup
-            scraper.driver_pool.cleanup()
+            if scraper:
+                try:
+                    scraper.driver_pool.cleanup()
+                except Exception as e:
+                    print(f"Error during cleanup: {str(e)}")
             
             if self.is_running:
                 self.queue.put(("complete", f"Completed! Checked {processed} books"))
@@ -287,7 +534,16 @@ class LibraryScraperGUI:
                 self.queue.put(("stopped", f"Stopped. Processed {processed}/{total_books} books"))
                 
         except Exception as e:
-            self.queue.put(("error", f"Error occurred: {str(e)}"))
+            # Ensure cleanup happens even on error
+            if scraper:
+                try:
+                    scraper.driver_pool.cleanup()
+                except:
+                    pass
+            if self.is_running:
+                self.queue.put(("error", f"Error occurred: {str(e)}"))
+            else:
+                self.queue.put(("stopped", "Process stopped due to error"))
             
     def process_queue(self):
         """Process messages from worker thread"""
@@ -324,41 +580,8 @@ class LibraryScraperGUI:
         
     def display_result(self, result):
         """Display a single book result"""
-        text = self.results_text
-        
-        # Book header
-        header = f"\n--- {result['original_title']} by {result['original_author']} ---\n"
-        text.insert(tk.END, header, "header")
-        
-        if result['found_title']:
-            # Found book
-            text.insert(tk.END, f"Found: {result['found_title']} by {result['found_author']}\n")
-            text.insert(tk.END, f"Format: {result['format']}\n")
-            
-            # Availability with color coding
-            availability = result['availability']
-            if availability == "Available":
-                text.insert(tk.END, f"Status: {availability}\n", "available")
-            elif availability == "Unavailable":
-                text.insert(tk.END, f"Status: {availability}\n", "unavailable")
-            else:
-                text.insert(tk.END, f"Status: {availability}\n", "not_found")
-                
-            # Branch availability
-            if result['branch_availability']:
-                text.insert(tk.END, "Available at:\n")
-                for branch in result['branch_availability']:
-                    text.insert(tk.END, f"  • {branch['branch']}\n")
-                    
-            # Link
-            if result['detail_link']:
-                text.insert(tk.END, f"Link: {result['detail_link']}\n", "link")
-                
-        else:
-            text.insert(tk.END, "❌ Not found in library system\n", "not_found")
-            
-        # Scroll to bottom
-        text.see(tk.END)
+        # Display the result (result is already added to self.results in check_books_thread)
+        self.display_single_result(result)
         
         # Update summary
         self.update_summary()
@@ -368,13 +591,9 @@ class LibraryScraperGUI:
         if not self.results:
             return
             
-        total = len(self.results)
-        available = len([r for r in self.results if r['availability'] == 'Available'])
-        unavailable = len([r for r in self.results if r['availability'] == 'Unavailable'])
-        not_found = len([r for r in self.results if r['availability'] == 'Not found'])
-        
-        summary = f"📊 Summary: {total} books checked • {available} available • {unavailable} unavailable • {not_found} not found"
-        self.summary_var.set(summary)
+        # Use the filtered summary method
+        filtered_results = self.get_filtered_results()
+        self.update_summary_with_filter(filtered_results)
         
     def on_complete(self, message):
         """Handle completion"""
@@ -386,6 +605,9 @@ class LibraryScraperGUI:
         self.progress_bar['value'] = 100
         self.status_var.set("Complete ✅")
         
+        # Populate branch filter with available branches
+        self.populate_branch_filter()
+        
         # Show completion message
         messagebox.showinfo("Complete", message)
         
@@ -396,8 +618,13 @@ class LibraryScraperGUI:
         self.stop_button.config(state=tk.DISABLED)
         if self.results:
             self.save_button.config(state=tk.NORMAL)
+            # Populate branch filter with available branches
+            self.populate_branch_filter()
         self.progress_var.set(message)
         self.status_var.set("Stopped ⏹️")
+        
+        # Show completion message for stopped state
+        messagebox.showinfo("Stopped", message)
         
     def on_error(self, message):
         """Handle error"""
@@ -415,17 +642,35 @@ class LibraryScraperGUI:
             messagebox.showwarning("Warning", "No results to save")
             return
             
+        # Generate default filename with timestamp
+        default_filename = f"library_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        
         filename = filedialog.asksaveasfilename(
             title="Save Results",
             defaultextension=".json",
             filetypes=[("JSON files", "*.json"), ("All files", "*.*")],
-            initialname=f"library_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+            initialfile=default_filename
         )
         
         if filename:
             try:
+                # Create enhanced results with metadata
+                enhanced_results = {
+                    "metadata": {
+                        "export_date": datetime.now().isoformat(),
+                        "library_system": self.library_system.get(),
+                        "total_books_checked": len(self.results),
+                        "available_books": len([r for r in self.results if r['availability'] == 'Available']),
+                        "unavailable_books": len([r for r in self.results if r['availability'] == 'Unavailable']),
+                        "not_found_books": len([r for r in self.results if r['availability'] == 'Not found']),
+                        "source_csv": os.path.basename(self.csv_path.get()) if self.csv_path.get() else "Unknown"
+                    },
+                    "results": self.results
+                }
+                
                 with open(filename, 'w', encoding='utf-8') as f:
-                    json.dump(self.results, f, indent=2, ensure_ascii=False)
+                    json.dump(enhanced_results, f, indent=2, ensure_ascii=False)
+                
                 messagebox.showinfo("Success", f"Results saved to {os.path.basename(filename)}")
                 self.status_var.set(f"Saved: {os.path.basename(filename)}")
             except Exception as e:

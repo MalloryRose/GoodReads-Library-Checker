@@ -1,0 +1,65 @@
+{
+  "metadata": {
+    "export_date": "2025-07-30T12:45:26.264431",
+    "library_system": "PBCLibrary",
+    "total_books_checked": 1,
+    "available_books": 1,
+    "unavailable_books": 0,
+    "not_found_books": 0,
+    "source_csv": "test_goodreads.csv"
+  },
+  "results": [
+    {
+      "original_title": "Educated",
+      "original_author": "Tara Westover",
+      "original_isbn": "9780399590504",
+      "original_goodreads_id": "1",
+      "found_title": "Educated",
+      "found_author": "Tara Westover",
+      "format": "Unknown",
+      "availability": "Available",
+      "detail_link": "https://pbclibrary.bibliocommons.com/item/show/661861212",
+      "branch_availability": [
+        {
+          "branch": "WELLINGTON BRANCH"
+        },
+        {
+          "branch": "BELLE GLADE BRANCH"
+        },
+        {
+          "branch": "OKEECHOBEE BLVD BRANCH"
+        },
+        {
+          "branch": "TEQUESTA BRANCH"
+        },
+        {
+          "branch": "GARDENS BRANCH"
+        },
+        {
+          "branch": "JUPITER BRANCH"
+        },
+        {
+          "branch": "MAIN LIBRARY"
+        },
+        {
+          "branch": "ROYAL PALM BEACH BRANCH"
+        },
+        {
+          "branch": "LOULA V. YORK BRANCH"
+        },
+        {
+          "branch": "WEST BOYNTON BRANCH"
+        },
+        {
+          "branch": "GLADES ROAD BRANCH"
+        },
+        {
+          "branch": "HAGEN RANCH ROAD BRANCH"
+        },
+        {
+          "branch": "LANTANA ROAD BRANCH"
+        }
+      ]
+    }
+  ]
+}
